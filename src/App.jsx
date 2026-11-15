@@ -8,6 +8,7 @@ import {
 import WireframeHero from "./components/WireframeHero";
 import Preloader from "./components/Preloader";
 import HowItWorksStack from "./components/HowItWorksStack";
+import ResearchOrbit from "./components/ResearchOrbit";
 import "./hero-heading.css";
 import "./navbar.css";
 import "./buttons.css";
@@ -532,51 +533,8 @@ function App() {
       </div>
     </section>
 
-    {/* RESEARCH & INNOVATION SECTION — CENTERED MAIN HEADING & MODERNIZED */}
-    <section className="research-redesign-section" id="research">
-      <div className="research-header-centered">
-        <h2>Research & Innovation</h2>
-        <p>Built around a focused research question to evaluate recognition approaches for banking-domain PSL signs.</p>
-      </div>
-
-      <div className="research-cards-grid">
-        <div className="research-card">
-          <div className="research-card-icon">
-            <Hand size={24} />
-          </div>
-          <h3>Domain-specific dataset</h3>
-          <p>A custom dataset focused on banking-related PSL vocabulary, collected across multiple diverse signers to mirror counter conditions.</p>
-          <div className="research-card-footer">
-            <CheckCircle2 size={15} />
-            <span>Multi-signer counter corpus</span>
-          </div>
-        </div>
-
-        <div className="research-card">
-          <div className="research-card-icon">
-            <Users size={24} />
-          </div>
-          <h3>Signer-independent evaluation</h3>
-          <p>Evaluation considers signers not seen during training to rigorously study how models generalize to new deaf customers.</p>
-          <div className="research-card-footer">
-            <CheckCircle2 size={15} />
-            <span>Leave-one-signer-out protocol</span>
-          </div>
-        </div>
-
-        <div className="research-card">
-          <div className="research-card-icon">
-            <Layers3 size={24} />
-          </div>
-          <h3>Comparative approaches</h3>
-          <p>Landmark-based, RGB/frame-based and transfer-learning approaches are investigated to identify the optimal architecture.</p>
-          <div className="research-card-footer">
-            <CheckCircle2 size={15} />
-            <span>Multi-modal benchmark study</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    {/* RESEARCH & INNOVATION SECTION — PLANETARY ORBITAL REVOLUTION */}
+    <ResearchOrbit />
 
     <section className="closing-cta">
       <div className="closing-cta-content">
