@@ -90,7 +90,7 @@
 }
 
 .orbit-center-hub h2 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 21px;
   font-weight: 800;
   line-height: 1.15;
@@ -255,7 +255,7 @@
 
 /* Circle Title & Subtitle */
 .orbit-circle-card h3 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 12px;
   font-weight: 800;
   line-height: 1.25;
@@ -355,7 +355,7 @@
 
 
 .data-table-heading {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.6px;

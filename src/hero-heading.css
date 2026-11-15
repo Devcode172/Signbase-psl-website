@@ -5,7 +5,10 @@
 
 /* Container: inherits existing hero h1 sizing */
 .hero-h1-animated {
-  font: 800 clamp(43px, 5.3vw, 72px) / 1.08 Manrope, sans-serif;
+  font-family: var(--font-heading);
+  font-size: clamp(43px, 5.3vw, 72px);
+  font-weight: 800;
+  line-height: 1.08;
   letter-spacing: -3.6px;
   margin: 26px 0 20px;
   max-width: 650px;

@@ -46,7 +46,7 @@
 }
 
 .intro-header-wrap h2 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.8vw, 48px);
   font-weight: 800;
   line-height: 1.15;
@@ -287,12 +287,14 @@
 }
 
 .stat-number {
-  font-family: "Manrope", sans-serif;
-  font-size: clamp(30px, 2.8vw, 38px);
+  font-family: var(--font-heading);
+  font-feature-settings: "tnum", "cv11", "ss01";
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 800;
   line-height: 1;
   color: #102744;
-  letter-spacing: -1.2px;
+  letter-spacing: -1.5px;
   margin-bottom: 8px;
   position: relative;
   z-index: 2;
@@ -416,7 +418,7 @@
 }
 
 .challenge-card h3 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.8px;
@@ -517,7 +519,7 @@
 }
 
 .solution-fintech-card h3 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.8px;
@@ -630,7 +632,7 @@
 .vocab-chip em {
   font-style: normal;
   color: #ffffff;
-  font-family: "Noto Nastaliq Urdu", "DM Sans", sans-serif;
+  font-family: var(--font-urdu);
   font-size: 12px;
 }
 

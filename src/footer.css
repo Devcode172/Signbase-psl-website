@@ -45,7 +45,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 19px;
   font-weight: 800;
   color: #ffffff;
@@ -107,7 +107,7 @@
 
 /* Col Headers */
 .footer-col-title {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 1.4px;

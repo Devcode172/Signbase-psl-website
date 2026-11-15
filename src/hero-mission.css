@@ -180,7 +180,7 @@
 }
 
 .hero-statement-inner h2 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(32px, 3.8vw, 48px);
   font-weight: 800;
   line-height: 1.15;

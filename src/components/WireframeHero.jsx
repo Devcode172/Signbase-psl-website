@@ -73,66 +73,144 @@ export default function WireframeHero() {
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // --- Laptop Construction (Placed SIDE-BY-SIDE on the right) ---
+    // --- Laptop Construction (Realistic solid silver/grey — no wireframe trim) ---
     const laptopGroup = new THREE.Group();
-    // Positioned on the right side, oriented towards the human and towards the camera
     laptopGroup.position.set(0.50, 0.80, 0.18);
     laptopGroup.rotation.set(0.04, -0.32, 0.0);
     scene.add(laptopGroup);
 
-    const metalMaterial = new THREE.MeshStandardMaterial({
-      color: 0x071526,
-      metalness: 0.88,
-      roughness: 0.22
+    // Space-grey aluminium body
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: 0x9aa0a6,       // space grey
+      metalness: 0.92,
+      roughness: 0.18,
     });
 
-    const trimMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00f0ff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.45
+    // Slightly darker underside / inner surfaces
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0x6b7280,
+      metalness: 0.70,
+      roughness: 0.30,
     });
 
-    // Base chassis
-    const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(0.70, 0.016, 0.44), metalMaterial);
-    const baseTrim = new THREE.Mesh(new THREE.BoxGeometry(0.704, 0.018, 0.444), trimMaterial);
-    laptopGroup.add(baseMesh, baseTrim);
+    // Keyboard deck — slightly recessed dark surface
+    const keyboardMat = new THREE.MeshStandardMaterial({
+      color: 0x1c1c1e,
+      metalness: 0.4,
+      roughness: 0.6,
+    });
 
-    // Keyboard glow plate & trackpad
-    const keyboardMat = new THREE.MeshBasicMaterial({ color: 0x0c2b4d });
-    const keyboard = new THREE.Mesh(new THREE.PlaneGeometry(0.60, 0.20), keyboardMat);
+    // Trackpad — smooth glass-like surface
+    const trackpadMat = new THREE.MeshStandardMaterial({
+      color: 0x8e9499,
+      metalness: 0.95,
+      roughness: 0.08,
+    });
+
+    // ── Base chassis ──────────────────────────────────────────
+    const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(0.70, 0.016, 0.44), bodyMat);
+    laptopGroup.add(baseMesh);
+
+    // Thin rubber-feet strip on bottom edge (dark strip)
+    const feetMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0 });
+    const feet = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.003, 0.004), feetMat);
+    feet.position.set(0, -0.009, 0.21);
+    laptopGroup.add(feet);
+
+    // Keyboard area
+    const keyboard = new THREE.Mesh(new THREE.PlaneGeometry(0.60, 0.22), keyboardMat);
     keyboard.rotation.x = -Math.PI / 2;
-    keyboard.position.set(0, 0.009, -0.06);
+    keyboard.position.set(0, 0.009, -0.04);
     laptopGroup.add(keyboard);
 
-    const trackpadMat = new THREE.MeshBasicMaterial({ color: 0x113e6d });
-    const trackpad = new THREE.Mesh(new THREE.PlaneGeometry(0.24, 0.11), trackpadMat);
+    // Key rows — subtle raised rows for realism
+    const keyRowMat = new THREE.MeshStandardMaterial({ color: 0x2a2a2e, metalness: 0.3, roughness: 0.7 });
+    for (let r = 0; r < 4; r++) {
+      for (let c = 0; c < 12; c++) {
+        const key = new THREE.Mesh(new THREE.BoxGeometry(0.038, 0.003, 0.034), keyRowMat);
+        key.position.set(-0.255 + c * 0.046, 0.011, -0.14 + r * 0.048);
+        laptopGroup.add(key);
+      }
+    }
+
+    // Trackpad
+    const trackpad = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 0.12), trackpadMat);
     trackpad.rotation.x = -Math.PI / 2;
-    trackpad.position.set(0, 0.009, 0.13);
+    trackpad.position.set(0, 0.009, 0.14);
     laptopGroup.add(trackpad);
 
-    // Screen Lid (Hinged at the back of base)
+    // Thin trackpad border
+    const tpBorderMat = new THREE.MeshStandardMaterial({ color: 0x555c63, metalness: 0.8, roughness: 0.2 });
+    const tpBorder = new THREE.Mesh(new THREE.PlaneGeometry(0.228, 0.128), tpBorderMat);
+    tpBorder.rotation.x = -Math.PI / 2;
+    tpBorder.position.set(0, 0.0088, 0.14);
+    laptopGroup.add(tpBorder);
+
+    // ── Screen Lid ────────────────────────────────────────────
     const lidGroup = new THREE.Group();
     lidGroup.position.set(0, 0.008, -0.21);
-    // Tilted back slightly so screen directly faces the camera
     lidGroup.rotation.x = -0.22;
     laptopGroup.add(lidGroup);
 
-    const lidFrame = new THREE.Mesh(new THREE.BoxGeometry(0.70, 0.42, 0.015), metalMaterial);
-    lidFrame.position.set(0, 0.21, 0);
-    const lidTrim = new THREE.Mesh(new THREE.BoxGeometry(0.704, 0.424, 0.017), trimMaterial);
-    lidTrim.position.set(0, 0.21, 0);
-    lidGroup.add(lidFrame, lidTrim);
+    // Lid outer shell — space grey aluminium back
+    const lidOuter = new THREE.Mesh(new THREE.BoxGeometry(0.70, 0.42, 0.012), bodyMat);
+    lidOuter.position.set(0, 0.21, 0);
+    lidGroup.add(lidOuter);
 
-    // Webcam sensor indicator on lid bezel
+    // Lid inner bezel — dark matte frame around screen
+    const bezelMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.1, roughness: 0.95 });
+    const bezel = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.40, 0.004), bezelMat);
+    bezel.position.set(0, 0.21, 0.008);
+    lidGroup.add(bezel);
+
+    // Hinge bar — darker aluminium strip at bottom of lid
+    const hingeMat = new THREE.MeshStandardMaterial({ color: 0x636a71, metalness: 0.95, roughness: 0.12 });
+    const hinge = new THREE.Mesh(new THREE.BoxGeometry(0.70, 0.012, 0.016), hingeMat);
+    hinge.position.set(0, 0.006, 0);
+    lidGroup.add(hinge);
+
+    // Apple-logo-style emblem on lid back (subtle circle)
+    const emblemMat = new THREE.MeshStandardMaterial({ color: 0xb0b8bf, metalness: 1.0, roughness: 0.05 });
+    const emblem = new THREE.Mesh(new THREE.CircleGeometry(0.035, 32), emblemMat);
+    emblem.position.set(0, 0.21, -0.007);
+    emblem.rotation.y = Math.PI;
+    lidGroup.add(emblem);
+
+    // Webcam — tiny dark dot centred on bezel top
     const camDot = new THREE.Mesh(
       new THREE.SphereGeometry(0.006, 12, 12),
-      new THREE.MeshBasicMaterial({ color: 0x22c55e })
+      new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.8 })
     );
-    camDot.position.set(0, 0.408, 0.008);
+    camDot.position.set(0, 0.407, 0.009);
     lidGroup.add(camDot);
 
-    // Futuristic pedestal/stand beneath the laptop
+    // Webcam green active LED
+    const camLed = new THREE.Mesh(
+      new THREE.SphereGeometry(0.003, 8, 8),
+      new THREE.MeshBasicMaterial({ color: 0x22c55e })
+    );
+    camLed.position.set(0.012, 0.407, 0.009);
+    lidGroup.add(camLed);
+
+    // ── Thin hinge connector between base and lid ─────────────
+    const hingeBarMat = new THREE.MeshStandardMaterial({ color: 0x555c63, metalness: 0.95, roughness: 0.1 });
+    const hingeBar = new THREE.Mesh(new THREE.BoxGeometry(0.60, 0.010, 0.012), hingeBarMat);
+    hingeBar.position.set(0, 0.011, -0.21);
+    laptopGroup.add(hingeBar);
+
+    // ── Subtle shadow plane under laptop ─────────────────────
+    const shadowMat = new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      transparent: true,
+      opacity: 0.18,
+      depthWrite: false,
+    });
+    const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(0.80, 0.55), shadowMat);
+    shadowPlane.rotation.x = -Math.PI / 2;
+    shadowPlane.position.set(0, -0.008, 0);
+    laptopGroup.add(shadowPlane);
+
+    // ── Futuristic pedestal/stand beneath the laptop ──────────
     const standMat = new THREE.MeshBasicMaterial({
       color: 0x00d2ff,
       wireframe: true,
@@ -178,7 +256,7 @@ export default function WireframeHero() {
       new THREE.PlaneGeometry(0.66, 0.38),
       new THREE.MeshBasicMaterial({ map: screenTexture })
     );
-    screenMesh.position.set(0, 0.21, 0.008);
+    screenMesh.position.set(0, 0.21, 0.012);
     lidGroup.add(screenMesh);
 
     // Function to render the screen based on recognition state
@@ -221,17 +299,17 @@ export default function WireframeHero() {
       ctx.shadowBlur = 0;
 
       ctx.fillStyle = "#e0f2fe";
-      ctx.font = "700 17px 'Segoe UI', Roboto, sans-serif";
+      ctx.font = "700 17px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "left";
       ctx.fillText("SIGNBASE PSL", 72, 48);
 
       ctx.fillStyle = "#38bdf8";
-      ctx.font = "600 13px 'Segoe UI', Roboto, sans-serif";
+      ctx.font = "600 13px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.fillText("AI RECOGNITION SYSTEM", 215, 48);
 
       ctx.textAlign = "right";
       ctx.fillStyle = state >= 2 ? "#4ade80" : "#94a3b8";
-      ctx.font = "600 13px 'Segoe UI', Roboto, sans-serif";
+      ctx.font = "600 13px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.fillText(state >= 2 ? "SIGN COMPLETE • VERIFIED" : "CAM: ACTIVE • 60 FPS", w - 48, 48);
 
       // Screen Content
@@ -265,11 +343,11 @@ export default function WireframeHero() {
         ctx.stroke();
 
         ctx.fillStyle = "#64748b";
-        ctx.font = "600 14px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "600 14px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText("STANDBY • AWAITING SIGN GESTURE", cx, cy + 115);
 
         ctx.fillStyle = "#334155";
-        ctx.font = "500 12px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "500 12px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText("Ready to capture Pakistan Sign Language input", cx, cy + 138);
 
       } else if (state === 1) {
@@ -279,7 +357,7 @@ export default function WireframeHero() {
 
         ctx.textAlign = "center";
         ctx.fillStyle = "#38bdf8";
-        ctx.font = "700 21px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "700 21px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText("PROCESSING CAPTURED SIGN...", cx, cy - 25);
 
         // Progress bar filling after hands are down
@@ -299,76 +377,33 @@ export default function WireframeHero() {
         ctx.fillRect(cx - barW / 2 + 2, cy + 12, fillW - 4, barH - 4);
 
         ctx.fillStyle = "#94a3b8";
-        ctx.font = "500 14px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "500 14px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText("Classifying motion trajectory & handshape against PSL database...", cx, cy + 50);
 
         const percent = Math.floor(prog * 100);
         ctx.fillStyle = "#38bdf8";
-        ctx.font = "700 13px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "700 13px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText(`${percent}% MATCHING`, cx, cy + 74);
 
       } else {
-        // --- STATE 2: SIGN COMPLETED! (Now "Account" is visible!) ---
+        // --- STATE 2: SIGN COMPLETED — show only sign name + "Sign detected" ---
         const cx = w / 2;
-
-        // Glowing border frame
-        ctx.strokeStyle = "rgba(0, 240, 255, 0.75)";
-        ctx.lineWidth = 2.5;
-        ctx.strokeRect(36, 88, w - 72, h - 124);
-
-        // Top recognized pill
-        const pillW = 290;
-        const pillH = 34;
-        ctx.fillStyle = "rgba(34, 197, 94, 0.18)";
-        ctx.fillRect(cx - pillW / 2, 108, pillW, pillH);
-        ctx.strokeStyle = "#22c55e";
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(cx - pillW / 2, 108, pillW, pillH);
+        const cy = h / 2;
 
         ctx.textAlign = "center";
-        ctx.fillStyle = "#4ade80";
-        ctx.font = "700 13px 'Segoe UI', Roboto, sans-serif";
-        ctx.fillText("● PSL SIGN COMPLETED & RECOGNIZED", cx, 130);
 
-        // HUGE crisp word: "Account"
+        // Sign name — large, crisp, glowing
         ctx.fillStyle = "#ffffff";
-        ctx.font = "800 68px 'Segoe UI', Roboto, sans-serif";
+        ctx.font = "800 96px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.shadowColor = "rgba(0, 229, 255, 0.85)";
-        ctx.shadowBlur = 24;
-        ctx.fillText("Account", cx, 226);
+        ctx.shadowBlur = 28;
+        ctx.fillText("Account", cx, cy - 20);
         ctx.shadowBlur = 0;
 
-        // Urdu Translation from PSL Dictionary: کھاتہ
-        ctx.fillStyle = "#38bdf8";
-        ctx.font = "700 44px 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, sans-serif";
-        ctx.fillText("کھاتہ", cx, 298);
-
-        // Metadata badges
-        ctx.fillStyle = "rgba(14, 165, 233, 0.14)";
-        ctx.fillRect(cx - 320, 332, 640, 44);
-        ctx.strokeStyle = "rgba(56, 189, 248, 0.35)";
-        ctx.strokeRect(cx - 320, 332, 640, 44);
-
-        ctx.font = "600 13px 'Segoe UI', Roboto, sans-serif";
-        ctx.fillStyle = "#bae6fd";
-        ctx.fillText("CATEGORY: BANKING  •  PSL DICTIONARY ID: #7180  •  PAKISTAN SIGN LANGUAGE", cx, 360);
-
-        // Dynamic audio/gesture waveform visualizer bars at the bottom
-        const barCount = 38;
-        const startX = cx - 280;
-        const totalW = 560;
-        const step = totalW / barCount;
-        for (let b = 0; b < barCount; b += 1) {
-          const barHeight = 8 + Math.sin(timeMs * 0.008 + b * 0.45) * 15 + Math.cos(b * 0.2) * 6;
-          const bx = startX + b * step;
-          const by = 470 - barHeight / 2;
-          ctx.fillStyle = b % 2 === 0 ? "#00f0ff" : "#38bdf8";
-          ctx.fillRect(bx, by, step * 0.65, barHeight);
-        }
-
-        ctx.fillStyle = "#64748b";
-        ctx.font = "500 12px 'Segoe UI', Roboto, sans-serif";
-        ctx.fillText("Banking interaction verified for teller interface", cx, 515);
+        // "Sign detected" label below
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "600 26px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillText("Sign detected", cx, cy + 55);
       }
 
       ctx.restore();
@@ -618,20 +653,31 @@ export default function WireframeHero() {
           tReturn = 1;
         }
 
-        // Rest angles:
-        const r_la = [0.15, 0.1, -1.35];
-        const r_lfa = [0.1, 0.2, -0.3];
-        const r_lh = [0.0, 0.0, 0.0];
+        // Rest angles (hands at sides/waist):
+        const r_la  = [0.15, 0.1, -1.35];
+        const r_lfa = [0.1,  0.2, -0.3];
+        const r_lh  = [0.0,  0.0,  0.0];
 
-        // Upper Chest angles (both hands in front of chest, index fingers pointing across):
-        const u_la = [-1.05, 0.42, -0.60];
-        const u_lfa = [-0.42, 0.28, -1.28];
-        const u_lh = [0.22, -0.12, 0.1];
+        // ── PSL "Account" (کھاتہ) sign ──────────────────────────────────────────
+        // Loose fists, only index fingers extended.
+        // Index tips almost touching (~1-2 cm apart) in front of CHEST.
+        // Palms face DOWN, angled slightly toward body → backs of hands face UP & outward.
+        // Thumbs rest against curled fingers.
+        // Forearms roughly parallel to ground. Wrists level with or slightly below knuckles.
+        //
+        // u_la  X=-1.0  → arms raised to CHEST level (not face)
+        // u_la  Z=-0.40 → elbows slightly out from body, ~90° bend
+        // u_lfa Y=-0.30 → slight supination: palm mostly DOWN, slight inward angle toward body
+        // u_lfa Z=-1.50 → forearms cross far inward → index tips ~1-2 cm apart
+        // u_lh  X=+0.10 → wrist sits slightly below knuckle line
+        const u_la  = [-1.0,  0.08, -0.40];
+        const u_lfa = [-0.08, -0.30, -1.50];
+        const u_lh  = [0.10,  0.0,   0.0];
 
-        // Lower Chest angles (stroked downwards in unison):
-        const d_la = [-0.68, 0.38, -0.88];
-        const d_lfa = [-0.30, 0.28, -1.12];
-        const d_lh = [0.22, -0.12, 0.1];
+        // LOWER — straight vertical drop to stomach, every angle identical (pure vertical stroke):
+        const d_la  = [-0.42, 0.08, -0.40];
+        const d_lfa = [-0.08, -0.30, -1.50];
+        const d_lh  = [0.10,  0.0,   0.0];
 
         // Compute current left arm angles via multi-stage lerp
         const cur_la = [0, 0, 0];
@@ -663,13 +709,13 @@ export default function WireframeHero() {
         if (rightHand) rightHand.rotation.set(cur_lh[0], -cur_lh[1], -cur_lh[2]);
 
         // Hand fingers:
-        // When active (tRaise > 0), Middle, Ring, Pinky are curled into fists,
-        // and Index finger is straight, pointing across horizontally!
-        const fingerCurl = THREE.MathUtils.lerp(0.15, 1.35, tRaise * (1 - tReturn));
-        const indexCurl = THREE.MathUtils.lerp(0.15, 0.05, tRaise * (1 - tReturn)); // index stays straight!
-        const thumbCurl = THREE.MathUtils.lerp(0.10, 0.65, tRaise * (1 - tReturn));
+        // When active (tRaise > 0), Middle, Ring, Pinky are curled INTO fist (inward toward palm),
+        // and Index finger is straight, pointing across horizontally toward the other hand.
+        const fingerCurl = THREE.MathUtils.lerp(0.0, -1.35, tRaise * (1 - tReturn)); // negative = curl inward for left hand
+        const indexCurl  = THREE.MathUtils.lerp(0.0, -0.05, tRaise * (1 - tReturn)); // near-zero = stays straight (index extended)
+        const thumbCurl  = THREE.MathUtils.lerp(0.0,  0.90, tRaise * (1 - tReturn)); // thumb tucks against curled fingers
 
-        // Left fingers
+        // Left fingers — negative Z curls toward palm (inward)
         for (let j = 1; j <= 3; j += 1) {
           const lIndex = modelBones[`mixamorigLeftHandIndex${j}`];
           const lMiddle = modelBones[`mixamorigLeftHandMiddle${j}`];
@@ -683,7 +729,7 @@ export default function WireframeHero() {
           if (lPinky) lPinky.rotation.z = fingerCurl;
           if (lThumb) lThumb.rotation.y = thumbCurl;
 
-          // Right fingers (inverted Z axis for curl)
+          // Right fingers — positive Z curls toward palm (inward, mirrored from left)
           const rIndex = modelBones[`mixamorigRightHandIndex${j}`];
           const rMiddle = modelBones[`mixamorigRightHandMiddle${j}`];
           const rRing = modelBones[`mixamorigRightHandRing${j}`];

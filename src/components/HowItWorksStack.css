@@ -48,7 +48,7 @@
 }
 
 .stack-section-header h2 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(34px, 4.2vw, 54px);
   font-weight: 800;
   line-height: 1.1;
@@ -76,7 +76,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -174,7 +174,7 @@
 .stack-step-tag {
   display: inline-flex;
   align-items: center;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -200,7 +200,7 @@
 }
 
 .stack-step-num {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-mono);
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -216,7 +216,7 @@
 }
 
 .stack-copy h3 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(26px, 2.5vw, 34px);
   font-weight: 800;
   line-height: 1.15;
@@ -234,7 +234,7 @@
 }
 
 .stack-urdu-label {
-  font-family: "Noto Nastaliq Urdu", "DM Sans", sans-serif;
+  font-family: var(--font-urdu);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 18px;
@@ -457,7 +457,7 @@
 .viewfinder-coords {
   position: absolute;
   bottom: 12px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: #00f5a0;
   letter-spacing: 0.5px;
@@ -533,7 +533,7 @@
 
 .conf-item b {
   display: block;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-mono);
   font-size: 15px;
   color: #00f5a0;
   font-weight: 800;
@@ -609,7 +609,7 @@
 }
 
 .teller-recognized-term h4 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
   color: #0a213e;
@@ -617,7 +617,7 @@
 }
 
 .teller-urdu-term {
-  font-family: "Noto Nastaliq Urdu", "DM Sans", sans-serif;
+  font-family: var(--font-urdu);
   font-size: 18px;
   font-weight: 700;
   color: #059669;
