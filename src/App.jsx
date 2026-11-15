@@ -236,7 +236,7 @@ function App() {
         />
         <AnimatedStatCard
           icon={Clock}
-          targetNumber={1.2}
+          targetNumber={1}
           formatValue={(val, active) => active ? <>&lt;{val.toFixed(1)}<em>s</em></> : <>&lt;1<em>s</em></>}
           label="Real-time gesture analysis to teller screen transcription latency."
           themeClass="stat-theme-cyan"
