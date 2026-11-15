@@ -501,16 +501,27 @@ export default function WireframeHero() {
       const behindFactor = tGoBehind * (1.0 - tReset);
       const forwardFactor = tLaptopForward * (1.0 - tReset);
 
+      const isNarrow = camera.aspect < 1.15;
+
+      // On mobile view: add a comfortable extra gap while the human performs the sign so they don't look cramped
+      const signActive = smoothstep(0.10, 0.26, progress) * (1.0 - smoothstep(0.44, 0.54, progress));
+      const mobileSignGap = isNarrow ? signActive * 0.05 : 0;
+
+      const hBaseX = isNarrow ? (-0.32 - mobileSignGap) : -0.55;
+      const hBackX = isNarrow ? -0.38 : -0.70;
+      const lBaseX = isNarrow ? (0.30 + mobileSignGap) : 0.50;
+      const lForwardX = isNarrow ? 0.02 : 0.12;
+
       // 1. Human depth position: starts in front, goes behind after sign, then returns
       if (humanModel) {
-        humanModel.position.x = THREE.MathUtils.lerp(-0.55, -0.70, behindFactor);
+        humanModel.position.x = THREE.MathUtils.lerp(hBaseX, hBackX, behindFactor);
         humanModel.position.z = THREE.MathUtils.lerp(0.0, -0.55, behindFactor);
         humanModel.rotation.y = THREE.MathUtils.lerp(0.42, 0.28, behindFactor);
       }
 
       // 2. Laptop foreground position: glides gracefully forward at comfortable size, then returns
       const floatY = Math.sin(elapsed * 0.002) * 0.004;
-      laptopGroup.position.x = THREE.MathUtils.lerp(0.50, 0.12, forwardFactor);
+      laptopGroup.position.x = THREE.MathUtils.lerp(lBaseX, lForwardX, forwardFactor);
       laptopGroup.position.y = THREE.MathUtils.lerp(0.80, 0.88, forwardFactor) + floatY;
       laptopGroup.position.z = THREE.MathUtils.lerp(0.18, 0.65, forwardFactor);
 
@@ -708,15 +719,11 @@ export default function WireframeHero() {
       const aspect = w / h;
       camera.aspect = aspect;
 
-      // On narrow mobile / tablet screens, adjust camera distance so human and laptop remain perfectly framed & centered
-      if (aspect < 1.25) {
-        camera.position.z = 2.28 + (1.25 - aspect) * 1.5;
-        camera.position.y = 1.10;
-      } else {
-        camera.position.z = 2.28;
-        camera.position.y = 1.15;
-      }
-      camera.lookAt(-0.025, 1.08, 0.10);
+      // Keep human and laptop large, prominent, and perfectly framed on both mobile & desktop
+      const isNarrow = aspect < 1.15;
+      camera.position.z = isNarrow ? 2.44 : 2.28;
+      camera.position.y = isNarrow ? 1.08 : 1.15;
+      camera.lookAt(-0.02, isNarrow ? 1.05 : 1.08, 0.10);
       camera.updateProjectionMatrix();
     };
 

@@ -5,6 +5,64 @@
       and proof badges with centered editorial alignment.
    ========================================================== */
 
+/* ── Centered Explore Technology Banner Below Navbar (Mobile Only) ─────── */
+.hero-explore-banner {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 14px 20px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #00f5a0;
+  background: rgba(0, 245, 160, 0.12);
+  border: 1px solid rgba(0, 245, 160, 0.42);
+  letter-spacing: 0.15px;
+  text-decoration: none;
+  transition:
+    background 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s ease,
+    box-shadow 0.24s ease;
+}
+
+.hero-explore-btn svg {
+  color: #00f5a0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.hero-explore-btn:hover {
+  background: linear-gradient(135deg, #00f5a0 0%, #00d287 100%);
+  color: #04231a;
+  border-color: #00f5a0;
+  box-shadow:
+    0 0 20px rgba(0, 245, 160, 0.45),
+    0 6px 18px rgba(0, 245, 160, 0.25);
+  transform: translateY(-1.5px);
+}
+
+.hero-explore-btn:hover svg {
+  color: #04231a;
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 800px) {
+  .hero-explore-banner {
+    display: flex;
+  }
+}
+
 /* ── Hero Centered Stage (Canvas Only) ───────────────────── */
 .hero-centered-stage {
   max-width: 1440px;
@@ -247,12 +305,25 @@
 }
 
 @media (max-width: 480px) {
+  .hero-explore-banner {
+    padding: 10px 16px 0;
+  }
+
+  .hero-explore-btn {
+    font-size: 12.5px;
+    padding: 8px 18px;
+  }
+
   .hero-centered-stage {
-    min-height: 420px;
+    min-height: 440px;
+    padding: 10px 0 20px !important;
+    width: 100%;
+    overflow: hidden;
   }
 
   .hero-visual-fullscreen {
-    height: 400px;
+    height: 430px;
+    width: 100%;
   }
 
   .hero-visual-fullscreen .orbit-a,

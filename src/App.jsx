@@ -47,12 +47,9 @@ function Header({ logoArrived }) {
             <span className="nav-link-line" aria-hidden="true"/>
           </a>
         ))}
-        <a className="mobile-menu-cta" href="#technology" onClick={() => setOpen(false)}>
-          Explore the technology <ArrowUpRight size={15}/>
-        </a>
       </nav>
       <a className="header-cta" href="#technology">
-        Explore the technology <ArrowUpRight size={15}/>
+        Explore the technology <ArrowUpRight size={14}/>
       </a>
       <button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>
         {open ? <X/> : <Menu/>}
@@ -139,37 +136,38 @@ function App() {
   const [siteReady, setSiteReady] = useState(false);
 
   useEffect(() => {
-    // Select all section heading containers and standalone h2/h3 (excluding hero h1 which has its own staggered entrance)
-    const targets = document.querySelectorAll(
-      ".hero-statement-inner, .intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .research-header-centered, .closing-cta-content, .challenge-card h3, .solution-fintech-card h3, .pe-panel-card h3, .research-card h3"
-    );
+    // Only activate heading emergence once preloader has finished and the site is visible
+    if (!siteReady) return undefined;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("emerged");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -40px 0px"
-      }
-    );
+    const timer = setTimeout(() => {
+      // Select main heading containers across all sections
+      const targets = document.querySelectorAll(
+        ".hero-statement-inner, .intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .orbit-center-hub, .closing-cta-content"
+      );
 
-    targets.forEach((el) => {
-      if (el.tagName === "H2" || el.tagName === "H3") {
-        el.classList.add("heading-emerge");
-      } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("emerged");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "0px 0px -40px 0px"
+        }
+      );
+
+      targets.forEach((el) => {
         el.classList.add("heading-emerge-wrap");
-      }
-      observer.observe(el);
-    });
+        observer.observe(el);
+      });
+    }, 100);
 
-    return () => observer.disconnect();
-  }, []);
+    return () => clearTimeout(timer);
+  }, [siteReady]);
 
   return (
     <>
@@ -179,6 +177,11 @@ function App() {
     <div className="hero-wrap" id="home">
       <div className="hero-glow glow-one"/><div className="hero-glow glow-two"/>
       <Header logoArrived={siteReady} />
+      <div className="hero-explore-banner">
+        <a className="hero-explore-btn" href="#technology">
+          Explore the technology <ArrowUpRight size={15}/>
+        </a>
+      </div>
       <main className="hero hero-centered-stage">
         <div className="hero-visual-fullscreen">
           <WireframeHero/>

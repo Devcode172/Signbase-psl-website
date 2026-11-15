@@ -26,6 +26,7 @@
 .heading-emerge-wrap h2,
 .heading-emerge-wrap h3,
 .heading-emerge-wrap p,
+.heading-emerge-wrap .hero-statement-desc,
 .heading-emerge-wrap .pe-eyebrow,
 .heading-emerge-wrap .tech-eyebrow,
 .heading-emerge-wrap .intro-eyebrow-pill {
@@ -42,6 +43,7 @@
 .heading-emerge-wrap.emerged h2,
 .heading-emerge-wrap.emerged h3,
 .heading-emerge-wrap.emerged p,
+.heading-emerge-wrap.emerged .hero-statement-desc,
 .heading-emerge-wrap.emerged .pe-eyebrow,
 .heading-emerge-wrap.emerged .tech-eyebrow,
 .heading-emerge-wrap.emerged .intro-eyebrow-pill {
@@ -62,7 +64,8 @@
   transition-delay: 110ms;
 }
 
-.heading-emerge-wrap.emerged p {
+.heading-emerge-wrap.emerged p,
+.heading-emerge-wrap.emerged .hero-statement-desc {
   transition-delay: 240ms;
 }
 
