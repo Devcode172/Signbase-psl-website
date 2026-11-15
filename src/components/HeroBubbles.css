@@ -1,0 +1,78 @@
+/* ==========================================================
+   HERO SECTION — FULL-WIDTH FLOATING BUBBLE LAYER
+   Bubbles rise from bottom across the entire hero-wrap,
+   sitting behind all content (z-index: 0).
+   ========================================================== */
+
+.hero-bubbles-layer {
+  position: absolute;
+  inset: 0;
+  /* sits above the radial-gradient bg but below all hero content */
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Individual bubble */
+.hb {
+  position: absolute;
+  bottom: -30px;         /* start just below the visible area */
+  border-radius: 50%;
+
+  /* Glowing cyan-blue bubble */
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(100, 220, 255, 0.55) 0%,
+    rgba(0, 180, 255, 0.25) 45%,
+    transparent 72%
+  );
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow:
+    0 0 6px rgba(0, 240, 255, 0.3),
+    inset 0 0 8px rgba(255, 255, 255, 0.08);
+
+  animation: bubbleRise linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.75);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  /* gentle horizontal wobble at mid-rise */
+  40% {
+    transform: translateY(-40vh) translateX(var(--wobble, 10px)) scale(1);
+  }
+  80% {
+    transform: translateY(-80vh) translateX(calc(var(--wobble, 10px) * -0.5)) scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(0) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Make sure the hero-wrap (parent) has position:relative so the layer is contained.
+   It already does, but guard anyway. */
+.hero-wrap {
+  position: relative;
+}
+
+/* Ensure hero header & content sit above the bubble layer */
+.site-header  { position: relative; z-index: 5; }
+.hero         { position: relative; z-index: 2; }
+.hero-bottom  { position: relative; z-index: 2; }
+.hero-glow    { z-index: 1; }
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hb {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}

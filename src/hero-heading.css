@@ -1,0 +1,99 @@
+/* =========================================================
+   HERO MAIN HEADING ANIMATION
+   Words slide up + fade in staggered, highlight glows & shimmers
+   ========================================================= */
+
+/* Container: inherits existing hero h1 sizing */
+.hero-h1-animated {
+  font: 800 clamp(43px, 5.3vw, 72px) / 1.08 Manrope, sans-serif;
+  letter-spacing: -3.6px;
+  margin: 26px 0 20px;
+  max-width: 650px;
+  /* Clip overflow during word slide-up */
+  /* Each word is block-displayed inline */
+}
+
+/* Individual word wrapper */
+.h1-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(32px) skewX(-3deg);
+  animation: heroWordIn 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* delay is set via inline style */
+}
+
+@keyframes heroWordIn {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) skewX(-3deg);
+    filter: blur(6px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) skewX(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* Highlight span: cyan glow + shimmer sweep */
+.h1-highlight {
+  position: relative;
+  color: #4fc7ff;
+  /* shimmer overlay */
+  background: linear-gradient(
+    105deg,
+    #4fc7ff 0%,
+    #a0eeff 42%,
+    #ffffff 50%,
+    #a0eeff 58%,
+    #4fc7ff 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation:
+    heroWordIn 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    h1Shimmer 3.8s linear 1.4s infinite;
+  text-shadow: none;
+}
+
+@keyframes h1Shimmer {
+  0%   { background-position: 220% center; }
+  100% { background-position: -20% center; }
+}
+
+/* Underline draw on highlight */
+.h1-highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #00f0ff, #4fc7ff, transparent);
+  animation: h1UnderlineDraw 0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+}
+
+@keyframes h1UnderlineDraw {
+  to { width: 100%; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .h1-word,
+  .h1-highlight {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+  .h1-highlight::after {
+    animation: none !important;
+    width: 100%;
+  }
+}

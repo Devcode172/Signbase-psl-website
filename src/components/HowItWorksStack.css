@@ -1,0 +1,732 @@
+/* ==========================================================
+   HOW IT WORKS — STICKY STACKING CARDS (EFFEPINNA STUDIO STYLE)
+   Sequential overlapping cards with sticky pinning, depth stacking,
+   editorial split typography on the left & interactive simulation on the right.
+   ========================================================== */
+
+.how-it-works-stack-section {
+  position: relative;
+  background: #f4f8fd;
+  padding: 100px 5.2% 120px;
+  overflow: visible; /* Required for sticky positioning */
+}
+
+/* ── Section Header (Editorial & Punchy) ─────────────────── */
+.stack-section-header {
+  max-width: 1320px;
+  margin: 0 auto 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  border-bottom: 2px solid #e1ecf8;
+  padding-bottom: 30px;
+}
+
+.stack-header-left {
+  max-width: 720px;
+}
+
+.stack-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #059669;
+  margin-bottom: 14px;
+}
+
+.stack-kicker-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 10px #00f5a0;
+}
+
+.stack-section-header h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(34px, 4.2vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  color: #0a213e;
+  margin: 0 0 14px;
+}
+
+.stack-section-header h2 span {
+  background: linear-gradient(135deg, #059669 0%, #168cf0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stack-section-header p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #576f8c;
+  margin: 0;
+  max-width: 580px;
+}
+
+.stack-header-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #7b96b3;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding-bottom: 6px;
+}
+
+.stack-header-indicator b {
+  font-size: 26px;
+  color: #0a213e;
+  font-weight: 800;
+}
+
+/* ── Stack Cards Track & Container ───────────────────────── */
+.stack-cards-track {
+  max-width: 1320px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── The Individual Stacking Card (effepinnastudio style) ─── */
+.stack-row-card {
+  position: sticky;
+  border-radius: 26px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(320px, 35%) minmax(0, 1fr);
+  min-height: 480px;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: layout style;
+  box-shadow: 0 14px 40px rgba(8, 30, 58, 0.1);
+}
+
+/* Stepped sticky top positions create the physical stacked deck */
+.stack-card-1 {
+  top: 86px;
+  z-index: 10;
+  margin-bottom: 100px;
+  background: #ffffff;
+  border: 1px solid #dce8f5;
+  box-shadow: 0 16px 45px rgba(8, 30, 58, 0.08);
+}
+
+.stack-card-2 {
+  top: 104px;
+  z-index: 20;
+  margin-bottom: 100px;
+  background: linear-gradient(145deg, #071f3d 0%, #051830 100%);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 -12px 40px rgba(2, 10, 22, 0.25), 0 20px 55px rgba(2, 10, 22, 0.35);
+  color: #ffffff;
+}
+
+.stack-card-3 {
+  top: 122px;
+  z-index: 30;
+  margin-bottom: 40px;
+  background: #ffffff;
+  border: 1px solid #cce0f5;
+  box-shadow: 0 -16px 45px rgba(8, 30, 58, 0.2), 0 25px 60px rgba(8, 30, 58, 0.12);
+}
+
+/* ── Left Column: Editorial Content (effepinnastudio copy) ── */
+.stack-copy {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(32px, 3.5vw, 48px);
+  position: relative;
+  border-right: 1px solid;
+}
+
+.stack-card-1 .stack-copy {
+  border-color: #eaf1f8;
+  background: #ffffff;
+}
+
+.stack-card-2 .stack-copy {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: transparent;
+}
+
+.stack-card-3 .stack-copy {
+  border-color: #eaf1f8;
+  background: #ffffff;
+}
+
+.stack-card-meta-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.stack-step-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.stack-card-1 .stack-step-tag,
+.stack-card-3 .stack-step-tag {
+  color: #059669;
+  background: #e6f9f2;
+  border: 1px solid #bbf7d0;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.stack-card-2 .stack-step-tag {
+  color: #00f5a0;
+  background: rgba(0, 245, 160, 0.12);
+  border: 1px solid rgba(0, 245, 160, 0.4);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.stack-step-num {
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.stack-card-1 .stack-step-num,
+.stack-card-3 .stack-step-num {
+  color: #9cb4cb;
+}
+
+.stack-card-2 .stack-step-num {
+  color: #55799e;
+}
+
+.stack-copy h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(26px, 2.5vw, 34px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.2px;
+  margin: 0 0 10px;
+}
+
+.stack-card-1 .stack-copy h3,
+.stack-card-3 .stack-copy h3 {
+  color: #0a213e;
+}
+
+.stack-card-2 .stack-copy h3 {
+  color: #ffffff;
+}
+
+.stack-urdu-label {
+  font-family: "Noto Nastaliq Urdu", "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: block;
+}
+
+.stack-card-1 .stack-urdu-label,
+.stack-card-3 .stack-urdu-label {
+  color: #059669;
+}
+
+.stack-card-2 .stack-urdu-label {
+  color: #00f5a0;
+}
+
+.stack-copy p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+
+.stack-card-1 .stack-copy p,
+.stack-card-3 .stack-copy p {
+  color: #556c87;
+}
+
+.stack-card-2 .stack-copy p {
+  color: #b2c9e2;
+}
+
+/* Tag Pills */
+.stack-tags-row {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stack-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stack-card-1 .stack-tag,
+.stack-card-3 .stack-tag {
+  background: #f1f6fc;
+  color: #274b70;
+  border: 1px solid #dce8f5;
+}
+
+.stack-card-2 .stack-tag {
+  background: rgba(14, 43, 79, 0.7);
+  color: #c4e4ff;
+  border: 1px solid rgba(100, 200, 255, 0.2);
+}
+
+/* ── Right Column: Interactive Simulator Media ──────────── */
+.stack-visual-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #041427;
+  padding: 24px;
+}
+
+/* Simulator Window Frame */
+.sim-window {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #09264a 0%, #041326 70%, #020914 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 12px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+/* Window Header Bar */
+.sim-header {
+  height: 38px;
+  background: rgba(8, 28, 54, 0.9);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #7dd3fc;
+  text-transform: uppercase;
+}
+
+.sim-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.sim-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #9cbcdb;
+  font-size: 9.5px;
+}
+
+/* ── Content Stage for Step 01: Capture Viewfinder ──────── */
+.sim-stage-capture {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.viewfinder-box {
+  width: 240px;
+  height: 240px;
+  border: 1.5px dashed rgba(0, 245, 160, 0.45);
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 35px rgba(0, 245, 160, 0.08);
+}
+
+/* Corner Viewfinder Reticles */
+.viewfinder-box::before,
+.viewfinder-box::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #00f5a0;
+  border-style: solid;
+}
+.viewfinder-box::before {
+  top: -2px;
+  left: -2px;
+  border-width: 3px 0 0 3px;
+}
+.viewfinder-box::after {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 3px 3px 0;
+}
+
+.reticle-tr, .reticle-bl {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #00f5a0;
+  border-style: solid;
+}
+.reticle-tr {
+  top: -2px;
+  right: -2px;
+  border-width: 3px 3px 0 0;
+}
+.reticle-bl {
+  bottom: -2px;
+  left: -2px;
+  border-width: 0 0 3px 3px;
+}
+
+.viewfinder-hand-icon {
+  color: #7dd3fc;
+  filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.7));
+  animation: handSway 4s ease-in-out infinite alternate;
+}
+
+@keyframes handSway {
+  0% { transform: translateY(-4px) rotate(-2deg); }
+  100% { transform: translateY(4px) rotate(2deg); }
+}
+
+.viewfinder-scan-line {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f5a0, #ffffff, #00f5a0, transparent);
+  box-shadow: 0 0 12px #00f5a0;
+  animation: scanSweep 2s ease-in-out infinite;
+}
+
+@keyframes scanSweep {
+  0% { top: 15px; opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { top: 220px; opacity: 0.3; }
+}
+
+.viewfinder-coords {
+  position: absolute;
+  bottom: 12px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #00f5a0;
+  letter-spacing: 0.5px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* ── Content Stage for Step 02: AI Neural Engine ────────── */
+.sim-stage-ai {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.neural-rings-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.n-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.n-ring-1 {
+  inset: 0;
+  border: 1.5px dashed rgba(56, 189, 248, 0.45);
+  animation: ringSpinClockwise 10s linear infinite;
+}
+.n-ring-2 {
+  inset: 24px;
+  border: 1.5px solid rgba(0, 245, 160, 0.6);
+  border-top-color: #ffffff;
+  animation: ringSpinCounter 7s linear infinite;
+}
+.n-ring-3 {
+  inset: 48px;
+  border: 1px solid rgba(56, 189, 248, 0.7);
+  background: radial-gradient(circle, rgba(0, 245, 160, 0.15) 0%, transparent 70%);
+}
+
+.neural-center-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 18px #00f5a0);
+}
+
+.neural-confidence-box {
+  margin-top: 18px;
+  background: rgba(8, 30, 58, 0.85);
+  border: 1px solid rgba(0, 245, 160, 0.35);
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.conf-item small {
+  display: block;
+  font-size: 9px;
+  color: #7dd3fc;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.conf-item b {
+  display: block;
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  color: #00f5a0;
+  font-weight: 800;
+}
+
+/* ── Content Stage for Step 03: Teller Desk Display ─────── */
+.sim-stage-teller {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.teller-terminal-card {
+  width: 90%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  border: 1px solid #dce8f5;
+}
+
+.teller-terminal-top {
+  background: #f1f6fc;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2edf8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #47688c;
+  text-transform: uppercase;
+}
+
+.teller-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #059669;
+  font-size: 10px;
+}
+
+.teller-status-pill span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #059669;
+}
+
+.teller-terminal-body {
+  padding: 18px 20px;
+}
+
+.teller-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #718aab;
+  text-transform: uppercase;
+}
+
+.teller-recognized-term {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 6px 0 12px;
+}
+
+.teller-recognized-term h4 {
+  font-family: "Manrope", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0a213e;
+  margin: 0;
+}
+
+.teller-urdu-term {
+  font-family: "Noto Nastaliq Urdu", "DM Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.teller-desc-box {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #475569;
+  border: 1px solid #eef3f8;
+  margin-bottom: 14px;
+}
+
+.teller-actions-row {
+  display: flex;
+  gap: 10px;
+}
+
+.teller-btn-primary {
+  flex: 1;
+  padding: 8px 12px;
+  background: #059669;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+
+.teller-btn-secondary {
+  padding: 8px 14px;
+  background: #f1f6fc;
+  color: #264a70;
+  border: 1px solid #dce8f5;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+/* ── HUD Bottom Bar of Simulator ─────────────────────────── */
+.sim-footer {
+  height: 38px;
+  background: rgba(4, 18, 38, 0.95);
+  border-top: 1px solid rgba(56, 189, 248, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 10px;
+  color: #9cbcdb;
+}
+
+.sim-footer-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #00f5a0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sim-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 8px #00f5a0;
+}
+
+/* ── Responsive Adaptations ───────────────────────────────── */
+@media (max-width: 990px) {
+  .stack-row-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .stack-copy {
+    border-right: 0;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.15);
+    padding: 30px 24px;
+  }
+  .stack-card-1 { top: 76px; margin-bottom: 50px; }
+  .stack-card-2 { top: 92px; margin-bottom: 50px; }
+  .stack-card-3 { top: 108px; margin-bottom: 20px; }
+  .sim-window { min-height: 320px; }
+}
+
+@media (max-width: 640px) {
+  .how-it-works-stack-section {
+    padding: 70px 4% 90px;
+  }
+  .stack-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .stack-section-header h2 {
+    font-size: 30px;
+  }
+  .viewfinder-box {
+    width: 200px;
+    height: 200px;
+  }
+  .stack-card-1 { top: 68px; margin-bottom: 35px; }
+  .stack-card-2 { top: 80px; margin-bottom: 35px; }
+  .stack-card-3 { top: 92px; margin-bottom: 15px; }
+}

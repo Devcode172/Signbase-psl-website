@@ -1,0 +1,571 @@
+/* ==========================================================
+   PRODUCT EXPERIENCE SECTION — REDESIGNED
+   Background preserved: linear-gradient(120deg, #071d38, #0a3159 52%, #e6f2ff 52%, #f1f7ff)
+   Left: Customer-side Tablet (Dark tech aesthetic)
+   Center: Real-time Sync Telemetry Bridge
+   Right: Teller-side Desktop Workstation (Clean banking dashboard)
+   ========================================================== */
+
+.product-experience-section {
+  position: relative;
+  background: linear-gradient(120deg, #071d38 0%, #0a3159 55%, #e6f2ff 55%, #f1f7ff 100%);
+  padding: 100px 5.2% 110px;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .product-experience-section {
+    background: linear-gradient(155deg, #071d38 0%, #0a3159 55%, #0d3c68 100%);
+  }
+}
+
+/* ── Section Header ──────────────────────────────────────── */
+.pe-header-wrap {
+  max-width: 1320px;
+  margin: 0 auto 56px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.pe-header-copy {
+  max-width: 680px;
+}
+
+.pe-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #00f5a0;
+  margin-bottom: 12px;
+}
+
+.pe-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 10px #00f5a0;
+}
+
+.pe-header-wrap h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(34px, 4vw, 50px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1.8px;
+  color: #ffffff;
+  margin: 0 0 12px;
+}
+
+.pe-header-wrap h2 span {
+  background: linear-gradient(135deg, #00f5a0 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pe-header-wrap p {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #bad3ec;
+  margin: 0;
+}
+
+.pe-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(7, 29, 56, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #e0f2fe;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(3, 14, 28, 0.25);
+  flex-shrink: 0;
+}
+
+.pe-sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 10px #00f5a0;
+  animation: pulseDot 1.4s ease-in-out infinite alternate;
+}
+
+/* ── Dual Interface Stage (Split Layout) ─────────────────── */
+.pe-stage-grid {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+/* ── Panel Card 1: Customer Tablet (Left Side) ───────────── */
+.pe-panel-card {
+  border-radius: 24px;
+  padding: 36px 34px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  position: relative;
+}
+
+.pe-panel-customer {
+  background: linear-gradient(160deg, rgba(8, 32, 62, 0.85) 0%, rgba(4, 19, 39, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  box-shadow: 0 20px 50px rgba(2, 10, 22, 0.4);
+}
+
+.pe-panel-customer:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 245, 160, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 245, 160, 0.12), 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pe-device-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pe-device-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #00f5a0;
+  background: rgba(0, 245, 160, 0.12);
+  border: 1px solid rgba(0, 245, 160, 0.35);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.pe-device-os {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7dd3fc;
+  letter-spacing: 0.5px;
+}
+
+.pe-panel-card h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  margin: 0 0 8px;
+}
+
+.pe-panel-customer h3 {
+  color: #ffffff;
+}
+
+.pe-panel-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.pe-panel-customer .pe-panel-desc {
+  color: #a8c8e6;
+}
+
+/* ── Tablet Mockup Frame ─────────────────────────────────── */
+.pe-tablet-chassis {
+  background: #020b16;
+  border: 10px solid #1e3a5f;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 0 2px rgba(255, 255, 255, 0.3);
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.pe-tablet-notch {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f5a0;
+  box-shadow: 0 0 8px #00f5a0;
+  z-index: 5;
+}
+
+.pe-tablet-screen {
+  background: radial-gradient(ellipse at 50% 40%, #0c335e 0%, #071e3a 65%, #031022 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(100, 200, 255, 0.2);
+  padding: 16px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pe-screen-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #7dd3fc;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.pe-cam-viewfinder {
+  flex: 1;
+  border: 1.5px dashed rgba(0, 245, 160, 0.45);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 16px;
+  background: rgba(3, 16, 34, 0.45);
+}
+
+.pe-landmark-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+}
+
+.pe-landmark-point {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulseDot 2s ease-in-out infinite alternate;
+}
+.pe-landmark-point.lm-1 { top: 12px; left: 16px; animation-delay: 0.1s; }
+.pe-landmark-point.lm-2 { top: 6px; right: 28px; animation-delay: 0.3s; }
+.pe-landmark-point.lm-3 { top: 22px; right: 12px; animation-delay: 0.5s; }
+.pe-landmark-point.lm-4 { bottom: 22px; left: 18px; animation-delay: 0.2s; }
+.pe-landmark-point.lm-5 { bottom: 10px; right: 20px; animation-delay: 0.4s; }
+
+.pe-hand-icon {
+  color: #00f5a0;
+  filter: drop-shadow(0 0 14px rgba(0, 245, 160, 0.6));
+  animation: handSway 4s ease-in-out infinite alternate;
+}
+
+.pe-screen-prompt {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.pe-screen-bottom-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 9.5px;
+  color: #9cbcdb;
+  font-weight: 600;
+}
+
+.pe-hud-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #00f5a0;
+  font-weight: 700;
+}
+
+.pe-hud-status span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00f5a0;
+}
+
+/* ── Panel Card 2: Teller Workstation (Right Side on Light BG) ── */
+.pe-panel-teller {
+  background: #ffffff;
+  border: 1px solid #cce0f5;
+  box-shadow: 0 20px 50px rgba(18, 55, 95, 0.1);
+  color: #102744;
+}
+
+.pe-panel-teller:hover {
+  transform: translateY(-3px);
+  border-color: rgba(5, 150, 105, 0.45);
+  box-shadow: 0 24px 60px rgba(5, 150, 105, 0.15), 0 12px 30px rgba(18, 55, 95, 0.08);
+}
+
+.pe-panel-teller h3 {
+  color: #0a213e;
+}
+
+.pe-panel-teller .pe-panel-desc {
+  color: #556c87;
+}
+
+.pe-panel-teller .pe-device-tag {
+  color: #059669;
+  background: #e6f9f2;
+  border-color: #bbf7d0;
+}
+
+.pe-panel-teller .pe-device-os {
+  color: #3b82f6;
+}
+
+/* ── Monitor Mockup Frame ────────────────────────────────── */
+.pe-monitor-frame {
+  background: #ffffff;
+  border: 8px solid #cbd5e1;
+  border-bottom-width: 12px;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(18, 55, 95, 0.15);
+  overflow: hidden;
+  margin-bottom: 0px;
+}
+
+.pe-monitor-stand {
+  width: 72px;
+  height: 12px;
+  background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
+  margin: 0 auto 22px;
+  border-radius: 0 0 6px 6px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+}
+
+.pe-monitor-stand::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: #64748b;
+  border-radius: 3px;
+}
+
+.pe-monitor-screen {
+  background: #f8fafc;
+  padding: 16px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pe-monitor-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 14px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.pe-teller-verified-card {
+  background: #ffffff;
+  border: 1px solid #dce8f5;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 14px rgba(18, 55, 95, 0.05);
+  margin-bottom: 12px;
+}
+
+.pe-verified-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.pe-confidence-pill {
+  background: rgba(5, 150, 105, 0.12);
+  color: #059669;
+  font-weight: 800;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.pe-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #059669;
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+.pe-verified-title {
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0a213e;
+  margin: 0 0 4px;
+}
+
+.pe-verified-desc {
+  font-size: 11.5px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pe-monitor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.pe-btn-process {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: #059669;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.2);
+}
+
+.pe-btn-token {
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ── Feature Checklist Chips ─────────────────────────────── */
+.pe-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.pe-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.pe-panel-customer .pe-feature-item {
+  color: #cce3f9;
+}
+
+.pe-panel-teller .pe-feature-item {
+  color: #334155;
+}
+
+.pe-feature-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.pe-panel-customer .pe-feature-check {
+  background: rgba(0, 245, 160, 0.16);
+  color: #00f5a0;
+}
+
+.pe-panel-teller .pe-feature-check {
+  background: #e6f9f2;
+  color: #059669;
+}
+
+/* ── Responsive Adaptations ───────────────────────────────── */
+@media (max-width: 960px) {
+  .pe-header-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+  .pe-stage-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .product-experience-section {
+    padding: 75px 4% 85px;
+  }
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+    box-shadow: 0 0 4px #00f5a0;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
+    box-shadow: 0 0 12px #00f5a0;
+  }
+}
+
+@keyframes handSway {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(2px) rotate(2deg);
+  }
+}
+
