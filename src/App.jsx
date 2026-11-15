@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown, Cpu, Hand,
   Landmark, Menu, Monitor, ScanFace, ShieldCheck, Sparkles, Users, Video,
@@ -16,6 +16,7 @@ import "./product-experience.css";
 import "./technology-section.css";
 import "./research-section.css";
 import "./footer.css";
+import "./heading-emerge.css";
 
 function Header({ logoArrived }) {
   const [open, setOpen]       = useState(false);
@@ -64,8 +65,110 @@ function SectionHeading({ eyebrow, title, text, centered = false }) {
   </div>;
 }
 
+function AnimatedStatCard({ icon: Icon, badge, targetNumber, formatValue, label, themeClass, delay = 0 }) {
+  const [value, setValue] = useState(0);
+  const [inView, setInView] = useState(false);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    const duration = 1500;
+    let startTime;
+    let raf;
+
+    const animateCount = (now) => {
+      if (!startTime) startTime = now;
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // easeOutExpo
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setValue(targetNumber * ease);
+      if (progress < 1) {
+        raf = requestAnimationFrame(animateCount);
+      } else {
+        setValue(targetNumber);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      raf = requestAnimationFrame(animateCount);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [inView, targetNumber, delay]);
+
+  return (
+    <div
+      ref={cardRef}
+      className={`stat-metric-card ${themeClass} ${inView ? "stat-in-view" : ""}`}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <div className="stat-top-row">
+        <div className="stat-icon-wrap"><Icon size={18}/></div>
+        <span className="stat-badge">{badge}</span>
+      </div>
+      <div className="stat-number">{formatValue(value, inView)}</div>
+      <p className="stat-label">{label}</p>
+      <div className="stat-card-glow-bg" />
+      <div className="stat-card-sheen" />
+    </div>
+  );
+}
+
 function App() {
   const [siteReady, setSiteReady] = useState(false);
+
+  useEffect(() => {
+    // Select all section heading containers and standalone h2/h3 (excluding hero h1 which has its own staggered entrance)
+    const targets = document.querySelectorAll(
+      ".intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .research-header-centered, .closing-cta-content, .challenge-card h3, .solution-fintech-card h3, .pe-panel-card h3, .research-card h3"
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("emerged");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px"
+      }
+    );
+
+    targets.forEach((el) => {
+      if (el.tagName === "H2" || el.tagName === "H3") {
+        el.classList.add("heading-emerge");
+      } else {
+        el.classList.add("heading-emerge-wrap");
+      }
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
@@ -110,43 +213,44 @@ function App() {
         </p>
       </div>
 
-      {/* 4-Stat Metric Quick Facts */}
+      {/* 4-Stat Metric Quick Facts with Live Count & Hover Animations */}
       <div className="intro-stats-grid">
-        <div className="stat-metric-card">
-          <div className="stat-top-row">
-            <div className="stat-icon-wrap"><Users size={18}/></div>
-            <span className="stat-badge">Demographics</span>
-          </div>
-          <div className="stat-number">1.5M<em>+</em></div>
-          <p className="stat-label">Deaf citizens in Pakistan navigating branch banking without sign support.</p>
-        </div>
-
-        <div className="stat-metric-card">
-          <div className="stat-top-row">
-            <div className="stat-icon-wrap"><Hand size={18}/></div>
-            <span className="stat-badge">PSL Lexicon</span>
-          </div>
-          <div className="stat-number">47<em> Signs</em></div>
-          <p className="stat-label">Targeted banking vocabulary covering deposits, inquiries, loans & security.</p>
-        </div>
-
-        <div className="stat-metric-card">
-          <div className="stat-top-row">
-            <div className="stat-icon-wrap"><Clock size={18}/></div>
-            <span className="stat-badge">Latency</span>
-          </div>
-          <div className="stat-number">&lt;1.2<em>s</em></div>
-          <p className="stat-label">Real-time gesture analysis to teller screen transcription latency.</p>
-        </div>
-
-        <div className="stat-metric-card">
-          <div className="stat-top-row">
-            <div className="stat-icon-wrap"><ShieldCheck size={18}/></div>
-            <span className="stat-badge">Independence</span>
-          </div>
-          <div className="stat-number">100<em>%</em></div>
-          <p className="stat-label">Financial privacy and autonomous banking without third-party chaperones.</p>
-        </div>
+        <AnimatedStatCard
+          icon={Users}
+          badge="Demographics"
+          targetNumber={1.5}
+          formatValue={(val, active) => active ? <>{val.toFixed(1)}M<em>+</em></> : <>1.5M<em>+</em></>}
+          label="Deaf citizens in Pakistan navigating branch banking without sign support."
+          themeClass="stat-theme-green"
+          delay={0}
+        />
+        <AnimatedStatCard
+          icon={Hand}
+          badge="PSL Lexicon"
+          targetNumber={47}
+          formatValue={(val, active) => active ? <>{Math.floor(val)}<em> Signs</em></> : <>47<em> Signs</em></>}
+          label="Targeted banking vocabulary covering deposits, inquiries, loans & security."
+          themeClass="stat-theme-blue"
+          delay={120}
+        />
+        <AnimatedStatCard
+          icon={Clock}
+          badge="Latency"
+          targetNumber={1.2}
+          formatValue={(val, active) => active ? <>&lt;{val.toFixed(1)}<em>s</em></> : <>&lt;1.2<em>s</em></>}
+          label="Real-time gesture analysis to teller screen transcription latency."
+          themeClass="stat-theme-cyan"
+          delay={240}
+        />
+        <AnimatedStatCard
+          icon={ShieldCheck}
+          badge="Independence"
+          targetNumber={100}
+          formatValue={(val, active) => active ? <>{Math.floor(val)}<em>%</em></> : <>100<em>%</em></>}
+          label="Financial privacy and autonomous banking without third-party chaperones."
+          themeClass="stat-theme-purple"
+          delay={360}
+        />
       </div>
 
       {/* Side-by-Side Split Cards: Challenge vs Solution */}

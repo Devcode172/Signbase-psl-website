@@ -1,0 +1,107 @@
+/* ==========================================================
+   HEADING EMERGE ON SCROLL ANIMATION
+   Smooth blur-to-focus, upward float, and staggered reveal
+   whenever section headings scroll into the viewport.
+   ========================================================== */
+
+/* Standalone Headings (h2, h3) */
+.heading-emerge {
+  opacity: 0;
+  transform: translateY(32px) scale(0.98);
+  filter: blur(5px);
+  will-change: transform, opacity, filter;
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heading-emerge.emerged {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+/* Section Header Wrappers: Staggered Child Emergence */
+.heading-emerge-wrap h2,
+.heading-emerge-wrap h3,
+.heading-emerge-wrap p,
+.heading-emerge-wrap .pe-eyebrow,
+.heading-emerge-wrap .tech-eyebrow,
+.heading-emerge-wrap .intro-eyebrow-pill {
+  opacity: 0;
+  transform: translateY(32px) scale(0.98);
+  filter: blur(5px);
+  will-change: transform, opacity, filter;
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heading-emerge-wrap.emerged h2,
+.heading-emerge-wrap.emerged h3,
+.heading-emerge-wrap.emerged p,
+.heading-emerge-wrap.emerged .pe-eyebrow,
+.heading-emerge-wrap.emerged .tech-eyebrow,
+.heading-emerge-wrap.emerged .intro-eyebrow-pill {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+/* Stagger item delays */
+.heading-emerge-wrap.emerged .pe-eyebrow,
+.heading-emerge-wrap.emerged .tech-eyebrow,
+.heading-emerge-wrap.emerged .intro-eyebrow-pill {
+  transition-delay: 0ms;
+}
+
+.heading-emerge-wrap.emerged h2,
+.heading-emerge-wrap.emerged h3 {
+  transition-delay: 110ms;
+}
+
+.heading-emerge-wrap.emerged p {
+  transition-delay: 240ms;
+}
+
+/* Highlight shimmer sweep upon emergence */
+.heading-emerge-wrap.emerged h2 span,
+.heading-emerge-wrap.emerged h3 em,
+.heading-emerge.emerged h2 span,
+.heading-emerge.emerged h3 em {
+  animation: emergeHighlightSheen 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+@keyframes emergeHighlightSheen {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 0 rgba(0, 245, 160, 0));
+  }
+  50% {
+    filter: brightness(1.25) drop-shadow(0 0 14px rgba(0, 245, 160, 0.65));
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0 rgba(0, 245, 160, 0));
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .heading-emerge,
+  .heading-emerge-wrap h2,
+  .heading-emerge-wrap h3,
+  .heading-emerge-wrap p,
+  .heading-emerge-wrap .pe-eyebrow,
+  .heading-emerge-wrap .tech-eyebrow,
+  .heading-emerge-wrap .intro-eyebrow-pill {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .heading-emerge-wrap.emerged h2 span,
+  .heading-emerge.emerged h2 span {
+    animation: none !important;
+  }
+}

@@ -77,59 +77,200 @@
   margin: 0 auto 48px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 20px;
   position: relative;
   z-index: 3;
 }
 
+/* Individual Stat Metric Card */
 .stat-metric-card {
+  --card-accent: #059669;
+  --card-accent-soft: rgba(5, 150, 105, 0.12);
+  --card-glow: rgba(5, 150, 105, 0.22);
   background: #ffffff;
   border: 1px solid #dce8f5;
-  border-radius: 18px;
-  padding: 24px 22px;
+  border-radius: 20px;
+  padding: 26px 22px;
   box-shadow: 0 10px 30px rgba(18, 55, 95, 0.06);
-  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
 }
 
+/* Scroll Entrance Animation */
+.stat-metric-card.stat-in-view {
+  animation: statCardEntrance 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes statCardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover Lift & Dynamic Glow */
 .stat-metric-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(5, 150, 105, 0.35);
-  box-shadow: 0 16px 36px rgba(5, 150, 105, 0.12), 0 6px 18px rgba(18, 55, 95, 0.08);
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--card-accent);
+  box-shadow: 0 22px 45px var(--card-glow), 0 6px 18px rgba(18, 55, 95, 0.08);
+  z-index: 4;
 }
 
+/* Animated Top Gradient Accent Bar */
 .stat-metric-card::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #059669, transparent);
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--card-accent), var(--card-glow), transparent);
+  background-size: 200% 100%;
+  animation: statBorderSweep 3.2s ease-in-out infinite;
+}
+
+@keyframes statBorderSweep {
+  0% { background-position: -100% 0; }
+  50% { background-position: 100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Holographic Diagonal Sheen Sweep */
+.stat-card-sheen {
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
   opacity: 0;
-  transition: opacity 0.25s ease;
 }
 
-.stat-metric-card:hover::before {
+.stat-metric-card:hover .stat-card-sheen {
   opacity: 1;
+  animation: statSheenPass 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes statSheenPass {
+  0% { left: -70%; }
+  100% { left: 150%; }
+}
+
+/* Ambient Corner Radial Glow */
+.stat-card-glow-bg {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--card-accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.stat-metric-card:hover .stat-card-glow-bg {
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+/* 4 Individual Themed Card Palettes */
+/* 1. Demographics — Emerald */
+.stat-theme-green {
+  --card-accent: #059669;
+  --card-accent-soft: rgba(5, 150, 105, 0.16);
+  --card-glow: rgba(5, 150, 105, 0.22);
+}
+.stat-theme-green .stat-icon-wrap {
+  background: linear-gradient(135deg, #e6f9f2 0%, #cff7e7 100%);
+  color: #059669;
+}
+.stat-theme-green .stat-number em {
+  color: #059669;
+}
+
+/* 2. PSL Lexicon — Electric Sky Blue */
+.stat-theme-blue {
+  --card-accent: #0284c7;
+  --card-accent-soft: rgba(2, 132, 199, 0.16);
+  --card-glow: rgba(2, 132, 199, 0.22);
+}
+.stat-theme-blue .stat-icon-wrap {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0284c7;
+}
+.stat-theme-blue .stat-number em {
+  color: #0284c7;
+}
+
+/* 3. Latency — Cyan / Teal */
+.stat-theme-cyan {
+  --card-accent: #0d9488;
+  --card-accent-soft: rgba(13, 148, 136, 0.16);
+  --card-glow: rgba(13, 148, 136, 0.22);
+}
+.stat-theme-cyan .stat-icon-wrap {
+  background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+  color: #0d9488;
+}
+.stat-theme-cyan .stat-number em {
+  color: #0d9488;
+}
+
+/* 4. Independence — Violet / Indigo */
+.stat-theme-purple {
+  --card-accent: #7c3aed;
+  --card-accent-soft: rgba(124, 58, 237, 0.16);
+  --card-glow: rgba(124, 58, 237, 0.22);
+}
+.stat-theme-purple .stat-icon-wrap {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  color: #7c3aed;
+}
+.stat-theme-purple .stat-number em {
+  color: #7c3aed;
+}
+
+/* Top Row */
 .stat-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
-  background: #e6f9f2;
-  color: #059669;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+.stat-metric-card:hover .stat-icon-wrap {
+  transform: scale(1.18) rotate(6deg);
+  box-shadow: 0 4px 16px var(--card-accent-soft);
 }
 
 .stat-badge {
@@ -138,6 +279,11 @@
   letter-spacing: 0.8px;
   color: #637f9e;
   text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.stat-metric-card:hover .stat-badge {
+  color: var(--card-accent);
 }
 
 .stat-number {
@@ -148,11 +294,18 @@
   color: #102744;
   letter-spacing: -1.2px;
   margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.stat-metric-card:hover .stat-number {
+  transform: scale(1.03);
+  transform-origin: left center;
 }
 
 .stat-number em {
   font-style: normal;
-  color: #059669;
 }
 
 .stat-label {
@@ -161,6 +314,8 @@
   color: #64748b;
   margin: 0;
   font-weight: 500;
+  position: relative;
+  z-index: 2;
 }
 
 /* ── Split Cards Grid ─────────────────────────────────────── */

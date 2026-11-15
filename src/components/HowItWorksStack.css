@@ -107,26 +107,24 @@
   display: grid;
   grid-template-columns: minmax(320px, 35%) minmax(0, 1fr);
   min-height: 480px;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-  contain: layout style;
   box-shadow: 0 14px 40px rgba(8, 30, 58, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Stepped sticky top positions create the physical stacked deck */
 .stack-card-1 {
   top: 86px;
   z-index: 10;
-  margin-bottom: 100px;
+  margin-bottom: 120px;
   background: #ffffff;
   border: 1px solid #dce8f5;
   box-shadow: 0 16px 45px rgba(8, 30, 58, 0.08);
 }
 
 .stack-card-2 {
-  top: 104px;
+  top: 106px;
   z-index: 20;
-  margin-bottom: 100px;
+  margin-bottom: 120px;
   background: linear-gradient(145deg, #071f3d 0%, #051830 100%);
   border: 1px solid rgba(56, 189, 248, 0.3);
   box-shadow: 0 -12px 40px rgba(2, 10, 22, 0.25), 0 20px 55px rgba(2, 10, 22, 0.35);
@@ -134,7 +132,7 @@
 }
 
 .stack-card-3 {
-  top: 122px;
+  top: 126px;
   z-index: 30;
   margin-bottom: 40px;
   background: #ffffff;
@@ -703,9 +701,9 @@
     border-bottom: 1px solid rgba(100, 200, 255, 0.15);
     padding: 30px 24px;
   }
-  .stack-card-1 { top: 76px; margin-bottom: 50px; }
-  .stack-card-2 { top: 92px; margin-bottom: 50px; }
-  .stack-card-3 { top: 108px; margin-bottom: 20px; }
+  .stack-card-1 { top: 76px; margin-bottom: 80px; }
+  .stack-card-2 { top: 96px; margin-bottom: 80px; }
+  .stack-card-3 { top: 116px; margin-bottom: 30px; }
   .sim-window { min-height: 320px; }
 }
 
@@ -726,9 +724,9 @@
     width: 200px;
     height: 200px;
   }
-  .stack-card-1 { top: 68px; margin-bottom: 35px; }
-  .stack-card-2 { top: 80px; margin-bottom: 35px; }
-  .stack-card-3 { top: 92px; margin-bottom: 15px; }
+  .stack-card-1 { top: 68px; margin-bottom: 60px; }
+  .stack-card-2 { top: 84px; margin-bottom: 60px; }
+  .stack-card-3 { top: 100px; margin-bottom: 25px; }
 }
 
 @media (max-width: 480px) {
