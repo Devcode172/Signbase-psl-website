@@ -15,9 +15,9 @@ export default function WireframeHero() {
     scene.fog = new THREE.FogExp2(0x061426, 0.065);
 
     const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
-    // Positioned so human (left) and laptop (right) are framed side-by-side
-    camera.position.set(0.0, 1.22, 2.85);
-    camera.lookAt(-0.04, 1.12, 0.10);
+    // Positioned so human and laptop are centered & enlarged
+    camera.position.set(-0.025, 1.15, 2.28);
+    camera.lookAt(-0.025, 1.08, 0.10);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -503,19 +503,19 @@ export default function WireframeHero() {
 
       // 1. Human depth position: starts in front, goes behind after sign, then returns
       if (humanModel) {
-        humanModel.position.x = THREE.MathUtils.lerp(-0.55, -0.82, behindFactor);
-        humanModel.position.z = THREE.MathUtils.lerp(0.0, -1.30, behindFactor);
-        humanModel.rotation.y = THREE.MathUtils.lerp(0.42, 0.24, behindFactor);
+        humanModel.position.x = THREE.MathUtils.lerp(-0.55, -0.70, behindFactor);
+        humanModel.position.z = THREE.MathUtils.lerp(0.0, -0.55, behindFactor);
+        humanModel.rotation.y = THREE.MathUtils.lerp(0.42, 0.28, behindFactor);
       }
 
-      // 2. Laptop foreground position: glides to front of screen, then returns
-      const floatY = Math.sin(elapsed * 0.002) * 0.005;
-      laptopGroup.position.x = THREE.MathUtils.lerp(0.50, 0.06, forwardFactor);
-      laptopGroup.position.y = THREE.MathUtils.lerp(0.80, 0.95, forwardFactor) + floatY;
-      laptopGroup.position.z = THREE.MathUtils.lerp(0.18, 1.30, forwardFactor);
+      // 2. Laptop foreground position: glides gracefully forward at comfortable size, then returns
+      const floatY = Math.sin(elapsed * 0.002) * 0.004;
+      laptopGroup.position.x = THREE.MathUtils.lerp(0.50, 0.12, forwardFactor);
+      laptopGroup.position.y = THREE.MathUtils.lerp(0.80, 0.88, forwardFactor) + floatY;
+      laptopGroup.position.z = THREE.MathUtils.lerp(0.18, 0.65, forwardFactor);
 
       laptopGroup.rotation.x = THREE.MathUtils.lerp(0.04, 0.02, forwardFactor);
-      laptopGroup.rotation.y = THREE.MathUtils.lerp(-0.32, -0.05, forwardFactor);
+      laptopGroup.rotation.y = THREE.MathUtils.lerp(-0.32, -0.08, forwardFactor);
 
       if (holoRing) {
         holoRing.position.x = laptopGroup.position.x;
@@ -708,14 +708,15 @@ export default function WireframeHero() {
       const aspect = w / h;
       camera.aspect = aspect;
 
-      // On narrow mobile / tablet screens, adjust camera distance so human and laptop remain perfectly framed
-      if (aspect < 1.15) {
-        camera.position.z = 2.85 + (1.15 - aspect) * 1.55;
-        camera.position.y = 1.15;
+      // On narrow mobile / tablet screens, adjust camera distance so human and laptop remain perfectly framed & centered
+      if (aspect < 1.25) {
+        camera.position.z = 2.28 + (1.25 - aspect) * 1.5;
+        camera.position.y = 1.10;
       } else {
-        camera.position.z = 2.85;
-        camera.position.y = 1.22;
+        camera.position.z = 2.28;
+        camera.position.y = 1.15;
       }
+      camera.lookAt(-0.025, 1.08, 0.10);
       camera.updateProjectionMatrix();
     };
 

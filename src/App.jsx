@@ -10,6 +10,7 @@ import Preloader from "./components/Preloader";
 import HowItWorksStack from "./components/HowItWorksStack";
 import ResearchOrbit from "./components/ResearchOrbit";
 import "./hero-heading.css";
+import "./hero-mission.css";
 import "./navbar.css";
 import "./buttons.css";
 import "./challenge-section.css";
@@ -125,7 +126,6 @@ function AnimatedStatCard({ icon: Icon, badge, targetNumber, formatValue, label,
     >
       <div className="stat-top-row">
         <div className="stat-icon-wrap"><Icon size={18}/></div>
-        <span className="stat-badge">{badge}</span>
       </div>
       <div className="stat-number">{formatValue(value, inView)}</div>
       <p className="stat-label">{label}</p>
@@ -141,7 +141,7 @@ function App() {
   useEffect(() => {
     // Select all section heading containers and standalone h2/h3 (excluding hero h1 which has its own staggered entrance)
     const targets = document.querySelectorAll(
-      ".intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .research-header-centered, .closing-cta-content, .challenge-card h3, .solution-fintech-card h3, .pe-panel-card h3, .research-card h3"
+      ".hero-statement-inner, .intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .research-header-centered, .closing-cta-content, .challenge-card h3, .solution-fintech-card h3, .pe-panel-card h3, .research-card h3"
     );
 
     const observer = new IntersectionObserver(
@@ -175,33 +175,32 @@ function App() {
     <>
       <Preloader onComplete={() => setSiteReady(true)} />
       <div className="app-shell">
+    {/* HERO SECTION — 3D HUMAN & LAPTOP ANIMATION ONLY (CENTERED & ENLARGED) */}
     <div className="hero-wrap" id="home">
       <div className="hero-glow glow-one"/><div className="hero-glow glow-two"/>
       <Header logoArrived={siteReady} />
-      <main className="hero">
-        <div className="hero-copy">
-          <h1 className="hero-h1-animated">
-            <span className="h1-word" style={{animationDelay:"0ms"}}>Breaking</span>{" "}
-            <span className="h1-word" style={{animationDelay:"80ms"}}>the</span>{" "}
-            <span className="h1-word" style={{animationDelay:"160ms"}}>communication</span>{" "}
-            <span className="h1-word" style={{animationDelay:"240ms"}}>barrier</span>{" "}
-            <span className="h1-word" style={{animationDelay:"320ms"}}>at</span>{" "}
-            <span className="h1-word" style={{animationDelay:"400ms"}}>the</span>{" "}
-            <span className="h1-highlight h1-word" style={{animationDelay:"500ms"}}>bank counter.</span>
-          </h1>
-          <p className="hero-description">SignBase PSL explores AI-powered recognition of Pakistan Sign Language, helping customers communicate their banking needs through a focused vocabulary of 47 banking-related signs.</p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#workflow">See how it works <ArrowRight size={17}/></a>
-            <a className="button button-ghost" href="#research">Explore the research</a>
-          </div>
-          <div className="hero-proof"><span><CheckCircle2 size={15}/> Banking-focused vocabulary</span><span><CheckCircle2 size={15}/> Multi-signer research</span></div>
-        </div>
-        <div className="hero-visual">
+      <main className="hero hero-centered-stage">
+        <div className="hero-visual-fullscreen">
           <WireframeHero/>
-          <div className="hero-orbit orbit-a"/><div className="hero-orbit orbit-b"/>
         </div>
       </main>
     </div>
+
+    {/* NEW SECTION AFTER HERO: HERO MISSION STATEMENT & ACTIONS */}
+    <section className="hero-statement-section" id="about">
+      <div className="hero-statement-inner">
+        <h2>
+          Breaking the communication barrier at the <span>bank counter.</span>
+        </h2>
+        <p className="hero-statement-desc">
+          SignBase PSL explores AI-powered recognition of Pakistan Sign Language, helping customers communicate their banking needs through a focused vocabulary of 47 banking-related signs.
+        </p>
+        <div className="hero-statement-actions">
+          <a className="button button-primary" href="#workflow">See how it works <ArrowRight size={17}/></a>
+          <a className="button button-outline-fintech" href="#research">Explore the research</a>
+        </div>
+      </div>
+    </section>
 
     {/* REDESIGNED SECTION AFTER HERO: MODERN FINTECH SPLIT CARDS */}
     <section className="fintech-intro-section" id="problem">
@@ -218,7 +217,6 @@ function App() {
       <div className="intro-stats-grid">
         <AnimatedStatCard
           icon={Users}
-          badge="Demographics"
           targetNumber={1.5}
           formatValue={(val, active) => active ? <>{val.toFixed(1)}M<em>+</em></> : <>1.5M<em>+</em></>}
           label="Deaf citizens in Pakistan navigating branch banking without sign support."
@@ -227,7 +225,6 @@ function App() {
         />
         <AnimatedStatCard
           icon={Hand}
-          badge="PSL Lexicon"
           targetNumber={47}
           formatValue={(val, active) => active ? <>{Math.floor(val)}<em> Signs</em></> : <>47<em> Signs</em></>}
           label="Targeted banking vocabulary covering deposits, inquiries, loans & security."
@@ -236,7 +233,6 @@ function App() {
         />
         <AnimatedStatCard
           icon={Clock}
-          badge="Latency"
           targetNumber={1.2}
           formatValue={(val, active) => active ? <>&lt;{val.toFixed(1)}<em>s</em></> : <>&lt;1.2<em>s</em></>}
           label="Real-time gesture analysis to teller screen transcription latency."
@@ -245,7 +241,6 @@ function App() {
         />
         <AnimatedStatCard
           icon={ShieldCheck}
-          badge="Independence"
           targetNumber={100}
           formatValue={(val, active) => active ? <>{Math.floor(val)}<em>%</em></> : <>100<em>%</em></>}
           label="Financial privacy and autonomous banking without third-party chaperones."
@@ -557,10 +552,6 @@ function App() {
             <p className="footer-tagline">
               Real-time Pakistan Sign Language recognition for accessible counter banking transactions.
             </p>
-            <div className="footer-status-badge">
-              <span className="footer-status-dot" />
-              Final Year Design Project
-            </div>
           </div>
 
           {/* Navigation Col */}

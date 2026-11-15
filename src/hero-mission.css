@@ -1,0 +1,278 @@
+/* ==========================================================
+   HERO CENTERED 3D STAGE & NEW STATEMENT MISSION SECTION
+   1. Hero stage contains ONLY the centered, enlarged 3D animation.
+   2. New mission statement section holds the hero text, CTA buttons,
+      and proof badges with centered editorial alignment.
+   ========================================================== */
+
+/* ── Hero Centered Stage (Canvas Only) ───────────────────── */
+.hero-centered-stage {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 10px 5.2% 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 720px;
+  width: 100%;
+}
+
+.hero-visual-fullscreen {
+  width: 100%;
+  height: 700px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-visual-fullscreen .wireframe-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-visual-fullscreen .wireframe-stage canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Centered Orbit Rings around 3D Stage */
+.hero-visual-fullscreen .orbit-a {
+  width: 680px;
+  height: 220px;
+  right: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  border: 1px solid rgba(46, 156, 232, 0.22);
+}
+
+.hero-visual-fullscreen .orbit-b {
+  width: 580px;
+  height: 170px;
+  right: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(18deg);
+  border: 1px solid rgba(46, 156, 232, 0.16);
+}
+
+/* Floating Scroll Cue at bottom of 3D Hero */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #73d8ff;
+  background: rgba(8, 35, 64, 0.65);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 8px 18px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  z-index: 3;
+  animation: cueBounce 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-scroll-cue svg {
+  color: #00f0ff;
+}
+
+@keyframes cueBounce {
+  0%, 100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -8px);
+  }
+}
+
+/* ── New Mission Statement Section (Moved Hero Text) ─────── */
+.hero-statement-section {
+  position: relative;
+  background: #ffffff;
+  color: #102744;
+  padding: 85px 5.2% 90px;
+  overflow: hidden;
+  border-bottom: 1px solid #eef4fa;
+}
+
+.hero-statement-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-statement-inner h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(32px, 3.8vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.6px;
+  color: #102744;
+  margin: 0 auto 16px;
+  max-width: 820px;
+}
+
+.hero-statement-inner h2 span {
+  background: linear-gradient(135deg, #059669 0%, #168cf0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-statement-desc {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #556c87;
+  max-width: 680px;
+  margin: 0 auto 32px;
+}
+
+.hero-statement-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.button-outline-fintech {
+  background: #ffffff;
+  color: #183453;
+  border: 1.5px solid #dce8f5;
+  box-shadow: 0 4px 14px rgba(12, 35, 64, 0.04);
+  transition: all 0.2s ease;
+}
+
+.button-outline-fintech:hover {
+  border-color: #168cf0;
+  color: #168cf0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(22, 140, 240, 0.12);
+}
+
+.hero-statement-proof {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: #334e68;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.hero-statement-proof span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f7faff;
+  border: 1px solid #e2edf8;
+  border-radius: 999px;
+  padding: 7px 16px;
+  box-shadow: 0 2px 8px rgba(12, 35, 64, 0.03);
+}
+
+.hero-statement-proof svg {
+  color: #059669;
+}
+
+/* ── Responsive Adaptations ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-centered-stage {
+    min-height: 620px;
+  }
+
+  .hero-visual-fullscreen {
+    height: 600px;
+  }
+
+  .hero-visual-fullscreen .orbit-a {
+    width: 520px;
+    height: 180px;
+  }
+
+  .hero-visual-fullscreen .orbit-b {
+    width: 440px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-centered-stage {
+    min-height: 520px;
+    padding: 10px 4% 20px;
+  }
+
+  .hero-visual-fullscreen {
+    height: 500px;
+  }
+
+  .hero-statement-section {
+    padding: 65px 5% 75px;
+  }
+
+  .hero-statement-inner h1 {
+    font-size: clamp(30px, 6.5vw, 42px);
+    letter-spacing: -1.4px;
+  }
+
+  .hero-statement-desc {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .hero-statement-proof {
+    gap: 16px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-centered-stage {
+    min-height: 420px;
+  }
+
+  .hero-visual-fullscreen {
+    height: 400px;
+  }
+
+  .hero-visual-fullscreen .orbit-a,
+  .hero-visual-fullscreen .orbit-b {
+    display: none;
+  }
+
+  .hero-statement-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-statement-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-statement-proof {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+}

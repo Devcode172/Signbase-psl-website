@@ -7,7 +7,7 @@
 .fintech-intro-section {
   position: relative;
   background: #f5f8fd;
-  padding: 85px 5.2% 100px;
+  padding: 80px 5.2% 35px;
   overflow: hidden;
 }
 
@@ -434,7 +434,7 @@
 .pain-points-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
   margin-top: 0;
 }
 
@@ -442,7 +442,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 13px 16px;
   border-radius: 12px;
   background: #f8fafc;
   border: 1px solid #eef3f8;
@@ -468,10 +468,10 @@
 
 .pain-point-content b {
   display: block;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .pain-point-content p {
@@ -540,7 +540,7 @@
 .solution-points-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
   margin-top: 0;
   margin-bottom: 18px;
 }
@@ -549,7 +549,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 13px 16px;
   border-radius: 12px;
   background: rgba(14, 43, 79, 0.55);
   border: 1px solid rgba(100, 200, 255, 0.14);
@@ -576,10 +576,10 @@
 
 .solution-point-content b {
   display: block;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .solution-point-content p {

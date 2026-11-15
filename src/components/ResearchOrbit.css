@@ -1,96 +1,62 @@
 /* ==========================================================
-   RESEARCH & INNOVATION — PLANETARY ORBITAL ANIMATION
-   Center Hub: "Research & Innovation" text with concentric pulse rings
-   Revolving Satellites: 3 circular nodes revolving 360° continuously
-   Counter-rotation ensures text & icons remain upright at all times
-   Hovering pauses the orbit for inspection & interaction
+   RESEARCH & INNOVATION — HUMAN-DESIGNED RESEARCH BENCHMARKS
+   1. Planetary Orbital Animation: Center "Research & Innovation" hub with 3 revolving nodes
+   2. Clean Human-Designed Tables:
+      - Domain-Specific Dataset
+      - Signer-Independent Evaluation
+      - Comparative Approaches
+   All 3 circles share identical dimensions, weights, and only elevate on hover.
    ========================================================== */
 
 .research-orbit-section {
   position: relative;
-  background: radial-gradient(circle at 50% 45%, #f4f9ff 0%, #edf4fc 60%, #e8f0f9 100%);
-  padding: 55px 5.2% 65px;
+  background: radial-gradient(circle at 50% 38%, #f8fbff 0%, #edf4fc 55%, #e6eff9 100%);
+  padding: 60px 5.2% 75px;
   overflow: hidden;
 }
 
-/* Subtle futuristic background grid lines */
+/* Subtle architectural grid backdrop */
 .research-orbit-section::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(rgba(2, 132, 199, 0.08) 1.5px, transparent 1.5px),
-    radial-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+    radial-gradient(rgba(2, 132, 199, 0.07) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(2, 132, 199, 0.04) 1px, transparent 1px);
   background-size: 48px 48px, 16px 16px;
   background-position: 0 0, 24px 24px;
-  opacity: 0.6;
+  opacity: 0.65;
   pointer-events: none;
 }
 
-/* Glowing ambient lighting blobs */
+/* Ambient Radial Glow */
 .orbit-ambient-glow {
   position: absolute;
-  top: 50%;
+  top: 360px;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 650px;
-  height: 650px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(2, 132, 199, 0.05) 45%, transparent 70%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(2, 132, 199, 0.04) 50%, transparent 72%);
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(55px);
   pointer-events: none;
   z-index: 1;
 }
 
-/* ── The Orbit Stage Container ───────────────────────────── */
+/* ── Planetary Orbit System Container ─────────────────────── */
 .research-orbit-system {
   position: relative;
   width: 100%;
-  max-width: 720px;
-  height: 720px;
-  margin: 0 auto;
+  max-width: 680px;
+  height: 680px;
+  margin: 0 auto 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
 }
 
-/* ── Static / Decorative Orbit Guideline Rings ────────────── */
-.orbit-ring-outer {
-  position: absolute;
-  width: 680px;
-  height: 680px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(2, 132, 199, 0.22);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.orbit-ring-inner {
-  position: absolute;
-  width: 440px;
-  height: 440px;
-  border-radius: 50%;
-  border: 1px solid rgba(2, 132, 199, 0.12);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.orbit-pulse-wave {
-  position: absolute;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  pointer-events: none;
-  z-index: 1;
-  animation: pulseWave 4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-}
-
-@keyframes pulseWave {
-  0% { transform: scale(0.85); opacity: 0.8; }
-  100% { transform: scale(1.45); opacity: 0; }
-}
 
 /* ── Center Hub: "Research & Innovation" ──────────────────── */
 .orbit-center-hub {
@@ -98,190 +64,143 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 320px;
-  height: 320px;
+  width: 210px;
+  height: 210px;
   border-radius: 50%;
-  background: radial-gradient(circle at 45% 40%, #ffffff 0%, #f4faff 65%, #e1effe 100%);
-  border: none;
+  background: radial-gradient(circle at 45% 40%, #ffffff 0%, #f4faff 65%, #e2effe 100%);
   box-shadow:
-    0 0 50px rgba(56, 189, 248, 0.22),
-    0 18px 45px rgba(12, 35, 64, 0.12),
+    0 0 50px rgba(56, 189, 248, 0.2),
+    0 18px 45px rgba(12, 35, 64, 0.1),
     inset 0 0 35px rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 34px 28px;
+  padding: 20px 16px;
   z-index: 10;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .orbit-center-hub:hover {
-  transform: translate(-50%, -50%) scale(1.03);
+  transform: translate(-50%, -50%) scale(1.02);
   box-shadow:
-    0 0 65px rgba(56, 189, 248, 0.32),
-    0 24px 55px rgba(12, 35, 64, 0.16);
-}
-
-.center-hub-emblem {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #0284c7 0%, #00f5a0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  margin-bottom: 12px;
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
-}
-
-.center-hub-tag {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #0284c7;
-  margin-bottom: 6px;
+    0 0 65px rgba(56, 189, 248, 0.3),
+    0 24px 55px rgba(12, 35, 64, 0.14);
 }
 
 .orbit-center-hub h2 {
   font-family: "Manrope", sans-serif;
-  font-size: 26px;
+  font-size: 21px;
   font-weight: 800;
   line-height: 1.15;
-  letter-spacing: -0.8px;
+  letter-spacing: -0.7px;
   color: #0c2340;
-  margin: 0 0 10px;
+  margin: 0 0 6px;
 }
 
 .orbit-center-hub p {
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: 11.5px;
+  line-height: 1.5;
   color: #556c86;
-  margin: 0 0 12px;
-  max-width: 250px;
+  margin: 0;
+  max-width: 175px;
 }
 
-.center-hub-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #059669;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  padding: 4px 10px;
-  border-radius: 999px;
-  letter-spacing: 0.3px;
-}
-
-/* ── Rotating Track Container ────────────────────────────── */
-.orbit-track {
+/* ── The 3 Revolving Nodes (Strictly fixed radius R = 270px) ── */
+.orbit-node {
   position: absolute;
-  width: 680px;
-  height: 680px;
-  border-radius: 50%;
   top: 50%;
   left: 50%;
-  margin-top: -340px;
-  margin-left: -340px;
+  width: 150px;
+  height: 150px;
+  margin-top: -75px;
+  margin-left: -75px;
   z-index: 5;
-  animation: orbitRotate 32s linear infinite;
-  transform-origin: center center;
+  pointer-events: auto;
 }
 
-@keyframes orbitRotate {
+/* Node 1: Starts at Top (0° / 360°) */
+.orbit-node-1 {
+  animation: orbitPath1 32s linear infinite;
+}
+
+@keyframes orbitPath1 {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg) translateY(-270px) rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) translateY(-270px) rotate(-360deg);
   }
 }
 
-/* ── The 3 Orbital Slots (120° equidistant distribution) ──── */
-.orbit-node-slot {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
+/* Node 2: Starts at 120° (Bottom Right) */
+.orbit-node-2 {
+  animation: orbitPath2 32s linear infinite;
 }
 
-/* Slot 1: Top (270° / -90°) */
-.orbit-node-slot-1 {
-  top: 0%;
-  left: 50%;
-}
-
-/* Slot 2: Bottom-Right (30°) */
-.orbit-node-slot-2 {
-  top: 75%;
-  left: 93.3%;
-}
-
-/* Slot 3: Bottom-Left (150°) */
-.orbit-node-slot-3 {
-  top: 75%;
-  left: 6.7%;
-}
-
-/* ── The Revolving Circle (Counter-Rotates to stay upright) ── */
-.orbit-circle {
-  animation: orbitCounterRotate 32s linear infinite;
-  transform-origin: center center;
-}
-
-@keyframes orbitCounterRotate {
+@keyframes orbitPath2 {
   from {
-    transform: rotate(0deg);
+    transform: rotate(120deg) translateY(-270px) rotate(-120deg);
   }
   to {
-    transform: rotate(-360deg);
+    transform: rotate(480deg) translateY(-270px) rotate(-480deg);
   }
 }
 
-/* ── Circle Visual Card (The Circular Box) ────────────────── */
+/* Node 3: Starts at 240° (Bottom Left) */
+.orbit-node-3 {
+  animation: orbitPath3 32s linear infinite;
+}
+
+@keyframes orbitPath3 {
+  from {
+    transform: rotate(240deg) translateY(-270px) rotate(-240deg);
+  }
+  to {
+    transform: rotate(600deg) translateY(-270px) rotate(-600deg);
+  }
+}
+
+/* ── The 3 Revolving Satellite Circle Cards ───────────────── */
+/* Identical dimensions, typography, and hover behaviour for all 3 */
 .orbit-circle-card {
-  width: 220px;
-  height: 220px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid #dce8f5;
   box-shadow:
-    0 16px 38px rgba(12, 35, 64, 0.09),
-    0 4px 12px rgba(2, 132, 199, 0.05);
+    0 14px 34px rgba(12, 35, 64, 0.08),
+    0 3px 10px rgba(2, 132, 199, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 22px 18px;
+  padding: 14px 10px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition:
-    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
     border-color 0.25s ease,
     box-shadow 0.25s ease,
     background 0.25s ease;
 }
 
 .orbit-circle-card:hover {
-  transform: scale(1.1);
-  background: linear-gradient(145deg, #ffffff 0%, #f0f7ff 100%);
+  transform: scale(1.08);
+  background: linear-gradient(145deg, #ffffff 0%, #f4f9ff 100%);
   z-index: 20;
 }
 
-/* Specific accent borders for cards */
+/* Borders for each circle */
 .circle-card-1 {
   border: 2px solid #059669;
 }
 .circle-card-1:hover {
   border-color: #059669;
-  box-shadow: 0 22px 50px rgba(5, 150, 105, 0.22), 0 0 24px rgba(0, 245, 160, 0.35);
+  box-shadow: 0 18px 45px rgba(5, 150, 105, 0.22), 0 0 20px rgba(0, 245, 160, 0.3);
 }
 
 .circle-card-2 {
@@ -289,7 +208,7 @@
 }
 .circle-card-2:hover {
   border-color: #0284c7;
-  box-shadow: 0 22px 50px rgba(2, 132, 199, 0.24), 0 0 24px rgba(56, 189, 248, 0.35);
+  box-shadow: 0 18px 45px rgba(2, 132, 199, 0.24), 0 0 20px rgba(56, 189, 248, 0.3);
 }
 
 .circle-card-3 {
@@ -297,18 +216,18 @@
 }
 .circle-card-3:hover {
   border-color: #6366f1;
-  box-shadow: 0 22px 50px rgba(99, 102, 241, 0.22), 0 0 24px rgba(165, 180, 252, 0.35);
+  box-shadow: 0 18px 45px rgba(99, 102, 241, 0.22), 0 0 20px rgba(165, 180, 252, 0.3);
 }
 
 /* Circle Icon Container */
 .orbit-circle-icon {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   transition: transform 0.25s ease;
 }
 
@@ -331,314 +250,317 @@
 }
 
 .orbit-circle-card:hover .orbit-circle-icon {
-  transform: scale(1.15) rotate(6deg);
+  transform: scale(1.12);
 }
 
-/* Circle Title */
+/* Circle Title & Subtitle */
 .orbit-circle-card h3 {
   font-family: "Manrope", sans-serif;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.25;
   color: #0c2340;
-  margin: 0 0 6px;
-  max-width: 170px;
+  margin: 0 0 3px;
+  max-width: 130px;
 }
 
-/* Circle Badge / Tag */
-.orbit-circle-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 999px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
-
-.circle-card-1 .orbit-circle-badge {
-  background: #f0fdf4;
-  color: #059669;
-  border: 1px solid #bbf7d0;
-}
-
-.circle-card-2 .orbit-circle-badge {
-  background: #f0f7ff;
-  color: #0284c7;
-  border: 1px solid #bae6fd;
-}
-
-.circle-card-3 .orbit-circle-badge {
-  background: #faf5ff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
-}
-
-/* Micro-Footer Info */
 .orbit-circle-sub {
-  font-size: 10px;
+  font-size: 9.5px;
   color: #64748b;
   font-weight: 600;
-  margin-top: 5px;
+  display: block;
 }
 
-/* ── Active Pillar Detail Console (Below Orbit) ──────────── */
-.orbit-active-drawer {
-  max-width: 820px;
-  margin: 20px auto 0;
-  background: #ffffff;
-  border: 1px solid #dce8f5;
-  border-radius: 20px;
-  padding: 18px 24px;
-  box-shadow: 0 10px 30px rgba(12, 35, 64, 0.05);
+/* ==========================================================
+   HUMAN-DESIGNED RESEARCH DATA TABLES CONSOLE
+   ========================================================== */
+.research-tables-console {
+  max-width: 1040px;
+  margin: 30px auto 0;
   position: relative;
-  z-index: 3;
-  transition: all 0.3s ease;
+  z-index: 5;
 }
 
-.active-drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #eef4fa;
-}
-
-.active-drawer-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.active-drawer-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+/* Segmented Control Tabs */
+.research-table-tabs {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  background: rgba(238, 244, 252, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid #d5e4f3;
+  box-shadow: 0 4px 18px rgba(12, 35, 64, 0.04);
+  max-width: 720px;
+  margin: 0 auto 20px;
 }
 
-.active-drawer-title-wrap h4 {
-  font-family: "Manrope", sans-serif;
-  font-size: 16px;
-  font-weight: 800;
+.table-segment-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #556c87;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.table-segment-tab:hover {
   color: #0c2340;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.table-segment-tab.tab-active {
+  background: #ffffff;
+  color: #0c2340;
+  border-color: #cbdbee;
+  box-shadow: 0 4px 14px rgba(12, 35, 64, 0.08);
+}
+
+.tab-text-title {
+  font-size: 13px;
+}
+
+/* ── Research Data Card ──────────────────────────────────── */
+.research-data-card {
+  background: #ffffff;
+  border: 1px solid #e1ecf8;
+  border-radius: 20px;
+  box-shadow:
+    0 16px 45px rgba(12, 35, 64, 0.05),
+    0 2px 8px rgba(12, 35, 64, 0.02);
+  padding: 28px 30px 24px;
+  transition: all 0.25s ease;
+}
+
+/* Card Header */
+.data-card-header {
+  padding-bottom: 18px;
+  border-bottom: 1px solid #edf3fa;
+}
+
+.data-card-title-group {
+  max-width: 820px;
+}
+
+
+.data-table-heading {
+  font-family: "Manrope", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: #0c2340;
+  margin: 0 0 6px;
+}
+
+.data-table-summary {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #556c87;
   margin: 0;
 }
 
-.active-drawer-badge {
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.active-drawer-desc {
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: #556c86;
-  margin: 0 0 16px;
-}
-
-.active-drawer-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.active-drawer-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: #f7faff;
-  border: 1px solid #dce7f3;
-  color: #1e3a5f;
-}
-
-.active-drawer-chip svg {
-  color: #059669;
-}
-
-/* Quick pillar switcher buttons */
-.orbit-pillar-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  position: relative;
-  z-index: 3;
-}
-
-.orbit-tab-btn {
+/* ── Responsive Table ────────────────────────────────────── */
+.research-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+  border-radius: 12px;
+  border: 1px solid #edf3f9;
   background: #ffffff;
-  border: 1px solid #dce8f5;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 12px;
+}
+
+.human-research-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 13.5px;
+}
+
+.human-research-table thead th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 13px 18px;
+  border-bottom: 1.5px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.human-research-table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.human-research-table tbody tr:hover {
+  background: #f8fbfe;
+}
+
+.human-research-table tbody td {
+  padding: 15px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: #334155;
+}
+
+.human-research-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-primary b {
+  font-size: 13.5px;
   font-weight: 700;
-  color: #475569;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  transition: all 0.2s ease;
+  color: #0f172a;
 }
 
-.orbit-tab-btn:hover {
-  border-color: #0284c7;
-  color: #0284c7;
+.cell-val {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0f172a;
 }
 
-.orbit-tab-btn.active {
-  background: #0284c7;
-  border-color: #0284c7;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+.cell-context {
+  font-size: 13px;
+  color: #556c87;
+  line-height: 1.45;
 }
 
 /* ── Responsive Adaptations ──────────────────────────────── */
 @media (max-width: 900px) {
   .research-orbit-section {
-    padding: 45px 5% 55px;
+    padding: 50px 4% 65px;
   }
 
   .research-orbit-system {
-    width: 560px;
-    height: 560px;
+    max-width: 520px;
+    height: 520px;
   }
 
-  .orbit-track {
-    width: 460px;
-    height: 460px;
-    margin-top: -230px;
-    margin-left: -230px;
-  }
-
-  .orbit-ring-outer {
-    width: 460px;
-    height: 460px;
-  }
-
-  .orbit-ring-inner {
-    width: 290px;
-    height: 290px;
-  }
 
   .orbit-center-hub {
-    width: 230px;
-    height: 230px;
-    padding: 20px 18px;
+    width: 180px;
+    height: 180px;
+    padding: 16px 12px;
   }
 
   .orbit-center-hub h2 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .orbit-center-hub p {
     font-size: 11px;
-    max-width: 190px;
+    max-width: 150px;
+  }
+
+  .orbit-node {
+    width: 125px;
+    height: 125px;
+    margin-top: -62.5px;
+    margin-left: -62.5px;
   }
 
   .orbit-circle-card {
-    width: 155px;
-    height: 155px;
-    padding: 14px 10px;
+    width: 125px;
+    height: 125px;
+    padding: 10px 6px;
   }
 
   .orbit-circle-card h3 {
-    font-size: 11.5px;
+    font-size: 11px;
   }
 
   .orbit-circle-icon {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
+  }
+
+  @keyframes orbitPath1 {
+    from { transform: rotate(0deg) translateY(-210px) rotate(0deg); }
+    to { transform: rotate(360deg) translateY(-210px) rotate(-360deg); }
+  }
+
+  @keyframes orbitPath2 {
+    from { transform: rotate(120deg) translateY(-210px) rotate(-120deg); }
+    to { transform: rotate(480deg) translateY(-210px) rotate(-480deg); }
+  }
+
+  @keyframes orbitPath3 {
+    from { transform: rotate(240deg) translateY(-210px) rotate(-240deg); }
+    to { transform: rotate(600deg) translateY(-210px) rotate(-600deg); }
+  }
+
+  .research-table-tabs {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .table-segment-tab {
+    width: 100%;
+  }
+
+  .research-data-card {
+    padding: 22px 18px;
   }
 }
 
-@media (max-width: 640px) {
-  .research-orbit-section {
-    padding: 35px 4% 45px;
-  }
-
+@media (max-width: 600px) {
   .research-orbit-system {
-    width: min(320px, 94vw);
-    height: min(320px, 94vw);
+    max-width: 340px;
+    height: 340px;
   }
 
-  .orbit-track {
-    width: 250px;
-    height: 250px;
-    margin-top: -125px;
-    margin-left: -125px;
-  }
-
-  .orbit-ring-outer {
-    width: 250px;
-    height: 250px;
-  }
-
-  .orbit-ring-inner {
-    width: 160px;
-    height: 160px;
-  }
 
   .orbit-center-hub {
-    width: 135px;
-    height: 135px;
+    width: 130px;
+    height: 130px;
     padding: 10px 8px;
-  }
-
-  .center-hub-emblem {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 4px;
-  }
-
-  .center-hub-emblem svg {
-    width: 16px;
-    height: 16px;
   }
 
   .orbit-center-hub h2 {
     font-size: 14px;
-    margin-bottom: 3px;
   }
 
   .orbit-center-hub p {
     display: none;
   }
 
-  .center-hub-hint {
-    font-size: 8px;
-    padding: 2px 6px;
+  .orbit-node {
+    width: 85px;
+    height: 85px;
+    margin-top: -42.5px;
+    margin-left: -42.5px;
   }
 
   .orbit-circle-card {
-    width: 105px;
-    height: 105px;
-    padding: 8px 6px;
+    width: 85px;
+    height: 85px;
+    padding: 6px 4px;
   }
 
   .orbit-circle-card h3 {
-    font-size: 9px;
-    line-height: 1.2;
-    margin-bottom: 2px;
+    font-size: 8.5px;
+  }
+
+  .orbit-circle-sub {
+    display: none;
   }
 
   .orbit-circle-icon {
-    width: 26px;
-    height: 26px;
-    margin-bottom: 3px;
+    width: 22px;
+    height: 22px;
+    margin-bottom: 2px;
   }
 
   .orbit-circle-icon svg {
@@ -646,20 +568,18 @@
     height: 14px;
   }
 
-  .orbit-circle-badge {
-    font-size: 7px;
-    padding: 2px 5px;
+  @keyframes orbitPath1 {
+    from { transform: rotate(0deg) translateY(-140px) rotate(0deg); }
+    to { transform: rotate(360deg) translateY(-140px) rotate(-360deg); }
   }
 
-  .orbit-circle-sub {
-    display: none;
+  @keyframes orbitPath2 {
+    from { transform: rotate(120deg) translateY(-140px) rotate(-120deg); }
+    to { transform: rotate(480deg) translateY(-140px) rotate(-480deg); }
   }
 
-  .orbit-pillar-tabs {
-    flex-wrap: wrap;
-  }
-
-  .active-drawer-chips {
-    flex-direction: column;
+  @keyframes orbitPath3 {
+    from { transform: rotate(240deg) translateY(-140px) rotate(-240deg); }
+    to { transform: rotate(600deg) translateY(-140px) rotate(-600deg); }
   }
 }

@@ -36,7 +36,7 @@ export default function HowItWorksStack() {
         <article className="stack-row-card stack-card-1">
           <div className="stack-copy">
             <div className="stack-card-meta-top">
-              <span className="stack-step-tag">Phase 01 • Video Capture</span>
+              <span className="stack-step-tag">01</span>
             </div>
 
             <h3>Customer Signs at Counter</h3>
@@ -90,7 +90,7 @@ export default function HowItWorksStack() {
         <article className="stack-row-card stack-card-2">
           <div className="stack-copy">
             <div className="stack-card-meta-top">
-              <span className="stack-step-tag">Phase 02 • Neural Inference</span>
+              <span className="stack-step-tag">02</span>
             </div>
 
             <h3>AI Analyzes &amp; Classifies</h3>
@@ -156,7 +156,7 @@ export default function HowItWorksStack() {
         <article className="stack-row-card stack-card-3">
           <div className="stack-copy">
             <div className="stack-card-meta-top">
-              <span className="stack-step-tag">Phase 03 • Counter Resolution</span>
+              <span className="stack-step-tag">03</span>
             </div>
 
             <h3>Teller Receives Verified Term</h3>

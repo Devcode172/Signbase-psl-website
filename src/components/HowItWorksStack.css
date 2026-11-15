@@ -7,7 +7,7 @@
 .how-it-works-stack-section {
   position: relative;
   background: #f4f8fd;
-  padding: 100px 5.2% 120px;
+  padding: 40px 5.2% 120px;
   overflow: visible; /* Required for sticky positioning */
 }
 
@@ -174,28 +174,29 @@
 .stack-step-tag {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 11px;
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #475569;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .stack-card-1 .stack-step-tag,
 .stack-card-3 .stack-step-tag {
-  color: #059669;
-  background: #e6f9f2;
-  border: 1px solid #bbf7d0;
-  padding: 5px 12px;
-  border-radius: 999px;
+  color: #475569;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .stack-card-2 .stack-step-tag {
-  color: #00f5a0;
-  background: rgba(0, 245, 160, 0.12);
-  border: 1px solid rgba(0, 245, 160, 0.4);
-  padding: 5px 12px;
-  border-radius: 999px;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .stack-step-num {

@@ -8,15 +8,15 @@ import {
   ShieldCheck,
   Award,
   Activity,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from "lucide-react";
 import "./ResearchOrbit.css";
 
-const RESEARCH_PILLARS = [
+const RESEARCH_TABLES = [
   {
     id: 1,
     title: "Domain-Specific Dataset",
-    shortBadge: "47 Signs",
     sub: "Multi-signer corpus",
     icon: Hand,
     colorClass: "circle-card-1",
@@ -25,16 +25,28 @@ const RESEARCH_PILLARS = [
     tagBorder: "#bbf7d0",
     description:
       "A custom dataset focused on banking-related PSL vocabulary, collected across 10 diverse native and fluent signers under authentic counter conditions to mirror real-world branch interactions.",
-    chips: [
-      "47 Banking Classes (Withdrawal, Deposit, PIN)",
-      "10 Diverse Signers (Balanced Gender & Hand Dominance)",
-      "2,350 Clips Recorded at 60 FPS under Counter Lighting"
+    columns: ["Focus Area", "Specification", "Counter Context"],
+    rows: [
+      {
+        col1: "Banking Classes",
+        col2: "47 Classes",
+        col3: "Withdrawal, Deposit, PIN"
+      },
+      {
+        col1: "Signer Demographics",
+        col2: "10 Diverse Signers",
+        col3: "Balanced Gender & Hand Dominance"
+      },
+      {
+        col1: "Corpus Volume",
+        col2: "2,350 Clips",
+        col3: "Recorded at 60 FPS under Counter Lighting"
+      }
     ]
   },
   {
     id: 2,
     title: "Signer-Independent Evaluation",
-    shortBadge: "LOSO 94.8%",
     sub: "Leave-One-Signer-Out",
     icon: Users,
     colorClass: "circle-card-2",
@@ -43,36 +55,61 @@ const RESEARCH_PILLARS = [
     tagBorder: "#bae6fd",
     description:
       "Evaluation strictly considers signers completely withheld during training to study how models generalize to new deaf customers approaching the counter for the very first time.",
-    chips: [
-      "94.8% Top-1 Unseen Signer Accuracy",
-      "Zero Data Leakage Cross-Validation",
-      "Inter-Signer Performance Variance < ±2.8%"
+    columns: ["Metric", "Result", "Protocol Scope"],
+    rows: [
+      {
+        col1: "Generalization Accuracy",
+        col2: "94.8% Top-1 Accuracy",
+        col3: "Unseen Signer Accuracy"
+      },
+      {
+        col1: "Validation Method",
+        col2: "Zero Data Leakage",
+        col3: "Leave-One-Signer-Out Cross-Validation"
+      },
+      {
+        col1: "Signer Consistency",
+        col2: "< ±2.8% Variance",
+        col3: "Inter-Signer Performance Variance"
+      }
     ]
   },
   {
     id: 3,
     title: "Comparative Approaches",
-    shortBadge: "Benchmark",
     sub: "Optimal architecture",
     icon: Layers3,
     colorClass: "circle-card-3",
-    tagColor: "#7c3aed",
+    tagColor: "#6366f1",
     tagBg: "#faf5ff",
     tagBorder: "#ddd6fe",
     description:
       "Landmark-based, 3D-CNN, and RGB transfer-learning architectures were evaluated to find the Pareto-optimal balance of sub-40ms latency and 100% customer facial privacy.",
-    chips: [
-      "MediaPipe + BiLSTM (Proposed: 94.8%, 32ms)",
-      "Spatial 3D-CNN ResNet3D (91.2%, 145ms)",
-      "100% Privacy-Preserving Landmark Pipeline"
+    columns: ["Architecture", "Performance", "Privacy & Feature Profile"],
+    rows: [
+      {
+        col1: "MediaPipe + BiLSTM",
+        col2: "94.8% (32ms)",
+        col3: "Proposed Optimal Architecture"
+      },
+      {
+        col1: "Spatial 3D-CNN ResNet3D",
+        col2: "91.2% (145ms)",
+        col3: "Volumetric Video Benchmark"
+      },
+      {
+        col1: "Landmark Pipeline",
+        col2: "100% Privacy",
+        col3: "Preserving Customer Facial Identity"
+      }
     ]
   }
 ];
 
 export default function ResearchOrbit() {
-  const [selectedPillarId, setSelectedPillarId] = useState(1);
-  const activePillar =
-    RESEARCH_PILLARS.find((p) => p.id === selectedPillarId) || RESEARCH_PILLARS[0];
+  const [selectedTableId, setSelectedTableId] = useState(1);
+  const activeTable =
+    RESEARCH_TABLES.find((t) => t.id === selectedTableId) || RESEARCH_TABLES[0];
 
   return (
     <section className="research-orbit-section" id="research">
@@ -81,11 +118,6 @@ export default function ResearchOrbit() {
 
       {/* Planetary Orbit Arena */}
       <div className="research-orbit-system">
-        {/* Concentric Decorative Rings */}
-        <div className="orbit-ring-outer" />
-        <div className="orbit-ring-inner" />
-        <div className="orbit-pulse-wave" />
-
         {/* ── CENTER HUB: "RESEARCH & INNOVATION" ─────────────── */}
         <div className="orbit-center-hub">
           <h2>Research &amp; Innovation</h2>
@@ -94,120 +126,113 @@ export default function ResearchOrbit() {
           </p>
         </div>
 
-        {/* ── ROTATING ORBIT TRACK (Revolves continuously) ────── */}
-        <div className="orbit-track">
-          {/* Node 1: Domain-Specific Dataset (Top: 0% / 50%) */}
-          <div className="orbit-node-slot orbit-node-slot-1">
-            <div className="orbit-circle">
-              <div
-                className="orbit-circle-card circle-card-1"
-                onClick={() => setSelectedPillarId(1)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && setSelectedPillarId(1)}
-              >
-                <div className="orbit-circle-icon">
-                  <Hand size={22} />
-                </div>
-                <h3>Domain-Specific Dataset</h3>
-                <span className="orbit-circle-sub">Multi-signer corpus</span>
-              </div>
+        {/* ── Node 1: Domain-Specific Dataset (Fixed distance, 0° start) ── */}
+        <div className="orbit-node orbit-node-1">
+          <div
+            className="orbit-circle-card circle-card-1"
+            onClick={() => setSelectedTableId(1)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSelectedTableId(1)}
+          >
+            <div className="orbit-circle-icon">
+              <Hand size={20} />
             </div>
+            <h3>Domain-Specific Dataset</h3>
+            <span className="orbit-circle-sub">Multi-signer corpus</span>
           </div>
+        </div>
 
-          {/* Node 2: Signer-Independent Evaluation (Bottom Right) */}
-          <div className="orbit-node-slot orbit-node-slot-2">
-            <div className="orbit-circle">
-              <div
-                className="orbit-circle-card circle-card-2"
-                onClick={() => setSelectedPillarId(2)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && setSelectedPillarId(2)}
-              >
-                <div className="orbit-circle-icon">
-                  <Users size={22} />
-                </div>
-                <h3>Signer-Independent Evaluation</h3>
-                <span className="orbit-circle-sub">Unseen signers</span>
-              </div>
+        {/* ── Node 2: Signer-Independent Evaluation (Fixed distance, 120° offset) ── */}
+        <div className="orbit-node orbit-node-2">
+          <div
+            className="orbit-circle-card circle-card-2"
+            onClick={() => setSelectedTableId(2)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSelectedTableId(2)}
+          >
+            <div className="orbit-circle-icon">
+              <Users size={20} />
             </div>
+            <h3>Signer-Independent Evaluation</h3>
+            <span className="orbit-circle-sub">Unseen signers</span>
           </div>
+        </div>
 
-          {/* Node 3: Comparative Approaches (Bottom Left) */}
-          <div className="orbit-node-slot orbit-node-slot-3">
-            <div className="orbit-circle">
-              <div
-                className="orbit-circle-card circle-card-3"
-                onClick={() => setSelectedPillarId(3)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && setSelectedPillarId(3)}
-              >
-                <div className="orbit-circle-icon">
-                  <Layers3 size={22} />
-                </div>
-                <h3>Comparative Approaches</h3>
-                <span className="orbit-circle-sub">Optimal architecture</span>
-              </div>
+        {/* ── Node 3: Comparative Approaches (Fixed distance, 240° offset) ── */}
+        <div className="orbit-node orbit-node-3">
+          <div
+            className="orbit-circle-card circle-card-3"
+            onClick={() => setSelectedTableId(3)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSelectedTableId(3)}
+          >
+            <div className="orbit-circle-icon">
+              <Layers3 size={20} />
             </div>
+            <h3>Comparative Approaches</h3>
+            <span className="orbit-circle-sub">Optimal architecture</span>
           </div>
         </div>
       </div>
 
-      {/* Quick Pillar Switcher Tabs */}
-      <div className="orbit-pillar-tabs">
-        {RESEARCH_PILLARS.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            className={`orbit-tab-btn ${selectedPillarId === p.id ? "active" : ""}`}
-            onClick={() => setSelectedPillarId(p.id)}
-          >
-            <p.icon size={14} />
-            <span>{p.title}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Active Pillar Detail Console */}
-      <div className="orbit-active-drawer">
-        <div className="active-drawer-header">
-          <div className="active-drawer-title-wrap">
-            <div
-              className="active-drawer-icon"
-              style={{
-                background: activePillar.tagBg,
-                color: activePillar.tagColor,
-                border: `1px solid ${activePillar.tagBorder}`
-              }}
+      {/* ── RESEARCH TABLES CONSOLE ─────────────────────────── */}
+      <div className="research-tables-console">
+        {/* Table Selector Tabs */}
+        <div className="research-table-tabs" role="tablist">
+          {RESEARCH_TABLES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={selectedTableId === t.id}
+              className={`table-segment-tab ${selectedTableId === t.id ? "tab-active" : ""}`}
+              onClick={() => setSelectedTableId(t.id)}
             >
-              <activePillar.icon size={18} />
-            </div>
-            <h4>{activePillar.title}</h4>
-          </div>
-
-          <span
-            className="active-drawer-badge"
-            style={{
-              color: activePillar.tagColor,
-              background: activePillar.tagBg,
-              border: `1px solid ${activePillar.tagBorder}`
-            }}
-          >
-            {activePillar.sub}
-          </span>
+              <t.icon size={15} />
+              <span className="tab-text-title">{t.title}</span>
+            </button>
+          ))}
         </div>
 
-        <p className="active-drawer-desc">{activePillar.description}</p>
+        {/* Clean Human-Designed Table Card */}
+        <div className="research-data-card">
+          <div className="data-card-header">
+            <div className="data-card-title-group">
+              <h3 className="data-table-heading">{activeTable.title}</h3>
+              <p className="data-table-summary">{activeTable.description}</p>
+            </div>
+          </div>
 
-        <div className="active-drawer-chips">
-          {activePillar.chips.map((chip, idx) => (
-            <span key={idx} className="active-drawer-chip">
-              <CheckCircle2 size={14} />
-              {chip}
-            </span>
-          ))}
+          {/* Responsive Table */}
+          <div className="research-table-responsive">
+            <table className="human-research-table">
+              <thead>
+                <tr>
+                  {activeTable.columns.map((col, idx) => (
+                    <th key={idx}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {activeTable.rows.map((row, idx) => (
+                  <tr key={idx}>
+                    <td className="cell-primary">
+                      <b>{row.col1}</b>
+                    </td>
+                    <td className="cell-spec">
+                      <span className="cell-val">{row.col2}</span>
+                    </td>
+                    <td className="cell-context">
+                      <span>{row.col3}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
