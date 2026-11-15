@@ -544,6 +544,50 @@
   }
 }
 
+@media (max-width: 640px) {
+  .product-experience-section {
+    padding: 60px 4% 70px;
+  }
+  .pe-header-copy h2 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+  .pe-panel-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+  .pe-panel-card h3 {
+    font-size: 22px;
+  }
+  .pe-tablet-chassis {
+    border-width: 6px;
+    border-radius: 14px;
+    padding: 6px;
+  }
+  .pe-tablet-screen {
+    padding: 12px;
+    min-height: 190px;
+  }
+  .pe-monitor-frame {
+    border-width: 6px;
+    border-radius: 14px;
+  }
+  .pe-monitor-screen {
+    padding: 12px;
+    min-height: 190px;
+  }
+  .pe-device-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .pe-monitor-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
 @keyframes pulseDot {
   0% {
     transform: scale(0.9);

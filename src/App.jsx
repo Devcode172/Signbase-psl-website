@@ -44,6 +44,9 @@ function Header({ logoArrived }) {
             <span className="nav-link-line" aria-hidden="true"/>
           </a>
         ))}
+        <a className="mobile-menu-cta" href="#technology" onClick={() => setOpen(false)}>
+          Explore the technology <ArrowUpRight size={15}/>
+        </a>
       </nav>
       <a className="header-cta" href="#technology">
         Explore the technology <ArrowUpRight size={15}/>

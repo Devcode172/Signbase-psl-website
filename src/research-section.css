@@ -191,3 +191,21 @@
     justify-content: flex-start;
   }
 }
+
+@media (max-width: 480px) {
+  .research-redesign-section {
+    padding: 55px 4% 65px;
+  }
+  .research-header-centered h2 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+  .research-card {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+  .research-card h3 {
+    font-size: 18px;
+  }
+}

@@ -222,3 +222,19 @@
     gap: 12px;
   }
 }
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 45px 4% 25px;
+  }
+  .footer-grid {
+    gap: 28px;
+    padding-bottom: 28px;
+  }
+  .footer-bottom-left,
+  .footer-bottom-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

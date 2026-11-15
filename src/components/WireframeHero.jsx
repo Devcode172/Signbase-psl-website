@@ -705,7 +705,17 @@ export default function WireframeHero() {
       const w = mount.clientWidth || 1;
       const h = mount.clientHeight || 1;
       renderer.setSize(w, h, false);
-      camera.aspect = w / h;
+      const aspect = w / h;
+      camera.aspect = aspect;
+
+      // On narrow mobile / tablet screens, adjust camera distance so human and laptop remain perfectly framed
+      if (aspect < 1.15) {
+        camera.position.z = 2.85 + (1.15 - aspect) * 1.55;
+        camera.position.y = 1.15;
+      } else {
+        camera.position.z = 2.85;
+        camera.position.y = 1.22;
+      }
       camera.updateProjectionMatrix();
     };
 

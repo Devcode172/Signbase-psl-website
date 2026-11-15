@@ -730,3 +730,38 @@
   .stack-card-2 { top: 80px; margin-bottom: 35px; }
   .stack-card-3 { top: 92px; margin-bottom: 15px; }
 }
+
+@media (max-width: 480px) {
+  .how-it-works-stack-section {
+    padding: 50px 3.5% 70px;
+  }
+  .stack-copy {
+    padding: 20px 16px;
+  }
+  .stack-copy h3 {
+    font-size: 22px;
+    letter-spacing: -0.8px;
+  }
+  .stack-visual-pane {
+    padding: 12px;
+  }
+  .sim-window {
+    min-height: 270px;
+  }
+  .viewfinder-box {
+    width: 160px;
+    height: 160px;
+  }
+  .wave-canvas-container {
+    height: 75px;
+  }
+  .teller-actions-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .teller-recognized-term {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
