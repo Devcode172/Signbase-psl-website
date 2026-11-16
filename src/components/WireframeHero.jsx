@@ -198,49 +198,6 @@ export default function WireframeHero() {
     hingeBar.position.set(0, 0.011, -0.21);
     laptopGroup.add(hingeBar);
 
-    // ── Subtle shadow plane under laptop ─────────────────────
-    const shadowMat = new THREE.MeshBasicMaterial({
-      color: 0x000000,
-      transparent: true,
-      opacity: 0.18,
-      depthWrite: false,
-    });
-    const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(0.80, 0.55), shadowMat);
-    shadowPlane.rotation.x = -Math.PI / 2;
-    shadowPlane.position.set(0, -0.008, 0);
-    laptopGroup.add(shadowPlane);
-
-    // ── Futuristic pedestal/stand beneath the laptop ──────────
-    const standMat = new THREE.MeshBasicMaterial({
-      color: 0x00d2ff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.32
-    });
-    const standStem = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, 0.44, 8), standMat);
-    standStem.position.set(0, -0.22, 0);
-    laptopGroup.add(standStem);
-
-    const standBase = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.28, 24), standMat);
-    standBase.rotation.x = -Math.PI / 2;
-    standBase.position.set(0, -0.44, 0);
-    laptopGroup.add(standBase);
-
-    // Glowing holographic base ring on the floor beneath laptop
-    const holoRing = new THREE.Mesh(
-      new THREE.RingGeometry(0.25, 0.42, 32),
-      new THREE.MeshBasicMaterial({
-        color: 0x00f0ff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.4,
-        side: THREE.DoubleSide
-      })
-    );
-    holoRing.rotation.x = -Math.PI / 2;
-    holoRing.position.set(0.50, 0.002, 0.18);
-    scene.add(holoRing);
-
     // --- Dynamic Laptop Screen Canvas ---
     const screenCanvas = document.createElement("canvas");
     screenCanvas.width = 1024;
@@ -404,6 +361,11 @@ export default function WireframeHero() {
         ctx.fillStyle = "#4ade80";
         ctx.font = "600 26px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
         ctx.fillText("Sign detected", cx, cy + 55);
+
+        // "Accuracy: 98.6%" line below
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "400 18px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillText("Accuracy: 98.6%", cx, cy + 85);
       }
 
       ctx.restore();
@@ -562,11 +524,6 @@ export default function WireframeHero() {
 
       laptopGroup.rotation.x = THREE.MathUtils.lerp(0.04, 0.02, forwardFactor);
       laptopGroup.rotation.y = THREE.MathUtils.lerp(-0.32, -0.08, forwardFactor);
-
-      if (holoRing) {
-        holoRing.position.x = laptopGroup.position.x;
-        holoRing.position.z = laptopGroup.position.z;
-      }
 
       // 3. Laptop Screen State Timing:
       let screenState = 0;

@@ -7,7 +7,7 @@
 .how-it-works-stack-section {
   position: relative;
   background: #f4f8fd;
-  padding: 40px 5.2% 120px;
+  padding: 40px 5.2% 40px;
   overflow: visible; /* Required for sticky positioning */
 }
 
@@ -253,7 +253,7 @@
 .stack-copy p {
   font-size: 13.5px;
   line-height: 1.7;
-  margin: 0 0 24px;
+  margin: 0 0 10px;
 }
 
 .stack-card-1 .stack-copy p,
@@ -267,16 +267,15 @@
 
 /* Tag Pills */
 .stack-tags-row {
-  margin-top: auto;
+  margin-top: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .stack-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+  display: inline-block;
   padding: 6px 11px;
   border-radius: 8px;
   font-size: 11px;
@@ -343,10 +342,21 @@
   gap: 8px;
 }
 
+.sim-header-title {
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  background: none;
+  border: none;
+  padding: 0;
+  text-transform: uppercase;
+}
+
 .sim-live-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   padding: 3px 8px;
   border-radius: 4px;
   background: rgba(239, 68, 68, 0.18);
@@ -378,58 +388,27 @@
 .viewfinder-box {
   width: 240px;
   height: 240px;
-  border: 1.5px dashed rgba(0, 245, 160, 0.45);
+  border: none;
   border-radius: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 35px rgba(0, 245, 160, 0.08);
+  box-shadow: none;
 }
 
-/* Corner Viewfinder Reticles */
+/* Corner Viewfinder Reticles - Removed */
 .viewfinder-box::before,
-.viewfinder-box::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: #00f5a0;
-  border-style: solid;
-}
-.viewfinder-box::before {
-  top: -2px;
-  left: -2px;
-  border-width: 3px 0 0 3px;
-}
-.viewfinder-box::after {
-  bottom: -2px;
-  right: -2px;
-  border-width: 0 3px 3px 0;
-}
-
-.reticle-tr, .reticle-bl {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: #00f5a0;
-  border-style: solid;
-}
-.reticle-tr {
-  top: -2px;
-  right: -2px;
-  border-width: 3px 3px 0 0;
-}
+.viewfinder-box::after,
+.reticle-tr,
 .reticle-bl {
-  bottom: -2px;
-  left: -2px;
-  border-width: 0 0 3px 3px;
+  display: none !important;
 }
 
 .viewfinder-hand-icon {
   color: #7dd3fc;
-  filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.7));
+  filter: none;
   animation: handSway 4s ease-in-out infinite alternate;
 }
 
@@ -443,8 +422,8 @@
   left: 10px;
   right: 10px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00f5a0, #ffffff, #00f5a0, transparent);
-  box-shadow: 0 0 12px #00f5a0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), #ffffff, rgba(255, 255, 255, 0.8), transparent);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
   animation: scanSweep 2s ease-in-out infinite;
 }
 
@@ -459,7 +438,7 @@
   bottom: 12px;
   font-family: var(--font-mono);
   font-size: 10px;
-  color: #00f5a0;
+  color: #ffffff;
   letter-spacing: 0.5px;
   background: rgba(0, 0, 0, 0.6);
   padding: 3px 8px;
@@ -535,7 +514,7 @@
   display: block;
   font-family: var(--font-mono);
   font-size: 15px;
-  color: #00f5a0;
+  color: #ffffff;
   font-weight: 800;
 }
 
@@ -570,23 +549,20 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
-  color: #47688c;
+  color: #4a5568;
   text-transform: uppercase;
 }
 
 .teller-status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  color: #059669;
+  gap: 10px;
+  color: #4a5568;
   font-size: 10px;
 }
 
 .teller-status-pill span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #059669;
+  display: none !important;
 }
 
 .teller-terminal-body {
@@ -678,8 +654,8 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #00f5a0;
-  font-weight: 700;
+  color: #9cbcdb;
+  font-weight: 600;
   letter-spacing: 0.5px;
 }
 

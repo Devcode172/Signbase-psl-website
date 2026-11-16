@@ -118,78 +118,12 @@
   }
 }
 
-/* Hover Lift & Dynamic Glow */
+/* Hover Lift — No Shadow */
 .stat-metric-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: var(--card-accent);
-  box-shadow: 0 22px 45px var(--card-glow), 0 6px 18px rgba(18, 55, 95, 0.08);
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: none !important;
   z-index: 4;
-}
-
-/* Animated Top Gradient Accent Bar */
-.stat-metric-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--card-accent), var(--card-glow), transparent);
-  background-size: 200% 100%;
-  animation: statBorderSweep 3.2s ease-in-out infinite;
-}
-
-@keyframes statBorderSweep {
-  0% { background-position: -100% 0; }
-  50% { background-position: 100% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Holographic Diagonal Sheen Sweep */
-.stat-card-sheen {
-  position: absolute;
-  top: -60%;
-  left: -70%;
-  width: 50%;
-  height: 220%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.55) 50%,
-    transparent 100%
-  );
-  transform: rotate(25deg);
-  pointer-events: none;
-  opacity: 0;
-}
-
-.stat-metric-card:hover .stat-card-sheen {
-  opacity: 1;
-  animation: statSheenPass 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes statSheenPass {
-  0% { left: -70%; }
-  100% { left: 150%; }
-}
-
-/* Ambient Corner Radial Glow */
-.stat-card-glow-bg {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--card-accent-soft) 0%, transparent 70%);
-  pointer-events: none;
-  opacity: 0.6;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.stat-metric-card:hover .stat-card-glow-bg {
-  opacity: 1;
-  transform: scale(1.35);
 }
 
 /* 4 Individual Themed Card Palettes */
@@ -199,12 +133,8 @@
   --card-accent-soft: rgba(5, 150, 105, 0.16);
   --card-glow: rgba(5, 150, 105, 0.22);
 }
-.stat-theme-green .stat-icon-wrap {
-  background: linear-gradient(135deg, #e6f9f2 0%, #cff7e7 100%);
-  color: #059669;
-}
 .stat-theme-green .stat-number em {
-  color: #059669;
+  color: #000000 !important;
 }
 
 /* 2. PSL Lexicon — Electric Sky Blue */
@@ -213,12 +143,8 @@
   --card-accent-soft: rgba(2, 132, 199, 0.16);
   --card-glow: rgba(2, 132, 199, 0.22);
 }
-.stat-theme-blue .stat-icon-wrap {
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-  color: #0284c7;
-}
 .stat-theme-blue .stat-number em {
-  color: #0284c7;
+  color: #000000 !important;
 }
 
 /* 3. Latency — Cyan / Teal */
@@ -227,12 +153,8 @@
   --card-accent-soft: rgba(13, 148, 136, 0.16);
   --card-glow: rgba(13, 148, 136, 0.22);
 }
-.stat-theme-cyan .stat-icon-wrap {
-  background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
-  color: #0d9488;
-}
 .stat-theme-cyan .stat-number em {
-  color: #0d9488;
+  color: #000000 !important;
 }
 
 /* 4. Independence — Violet / Indigo */
@@ -241,12 +163,12 @@
   --card-accent-soft: rgba(124, 58, 237, 0.16);
   --card-glow: rgba(124, 58, 237, 0.22);
 }
-.stat-theme-purple .stat-icon-wrap {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  color: #7c3aed;
-}
 .stat-theme-purple .stat-number em {
-  color: #7c3aed;
+  color: #000000 !important;
+}
+
+.stat-number em {
+  color: #000000 !important;
 }
 
 /* Top Row */
@@ -457,15 +379,19 @@
 }
 
 .pain-icon-box {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: #fee2e2;
-  color: #dc2626;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #000000;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .pain-point-content b {
@@ -483,14 +409,14 @@
   margin: 0;
 }
 
-/* ── Card 2: The SignBase Solution (Hero Fintech Card) ───── */
+/* ── Card 2: The SignBase Solution (Clean Human-Designed Card) ── */
 .solution-fintech-card {
-  background: linear-gradient(155deg, #09264c 0%, #061933 60%, #030f21 100%);
-  border: 1px solid rgba(0, 245, 160, 0.35);
+  background: #ffffff;
+  border: 1px solid #dce8f5;
   border-radius: 24px;
   padding: 34px 32px;
-  color: #ffffff;
-  box-shadow: 0 20px 50px rgba(4, 25, 54, 0.45);
+  color: #102744;
+  box-shadow: 0 16px 45px rgba(18, 55, 95, 0.08);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -500,22 +426,8 @@
 
 .solution-fintech-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(0, 245, 160, 0.65);
-  box-shadow: 0 24px 60px rgba(0, 245, 160, 0.16), 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-/* Ambient glow orb behind card */
-.solution-fintech-card::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 245, 160, 0.22) 0%, transparent 70%);
-  filter: blur(35px);
-  pointer-events: none;
+  border-color: #bae6fd;
+  box-shadow: 0 22px 55px rgba(18, 55, 95, 0.12);
 }
 
 .solution-fintech-card h3 {
@@ -523,20 +435,21 @@
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.8px;
-  color: #ffffff;
+  color: #102744;
   margin: 0 0 6px;
 }
 
 .solution-fintech-card h3 em {
   font-style: normal;
-  color: #00f5a0;
+  color: #0284c7;
 }
 
 .solution-card-desc {
   font-size: 13.5px;
   line-height: 1.55;
-  color: #b2cbe4;
+  color: #556c87;
   margin: 0 0 16px;
+  min-height: 2.8em;
 }
 
 .solution-points-list {
@@ -544,7 +457,7 @@
   flex-direction: column;
   gap: 18px;
   margin-top: 0;
-  margin-bottom: 18px;
+  margin-bottom: 0;
 }
 
 .solution-point-item {
@@ -553,42 +466,77 @@
   gap: 12px;
   padding: 13px 16px;
   border-radius: 12px;
-  background: rgba(14, 43, 79, 0.55);
-  border: 1px solid rgba(100, 200, 255, 0.14);
-  backdrop-filter: blur(8px);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  background: #f8fafc;
+  border: 1px solid #eef3f8;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .solution-point-item:hover {
-  background: rgba(14, 43, 79, 0.85);
-  border-color: rgba(0, 245, 160, 0.4);
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  transform: translateX(3px);
 }
 
 .solution-icon-box {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 245, 160, 0.16);
-  color: #00f5a0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #000000;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .solution-point-content b {
   display: block;
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: #102744;
   margin-bottom: 4px;
+  min-height: 1.3em;
 }
 
 .solution-point-content p {
   font-size: 12px;
   line-height: 1.45;
-  color: #9abfdc;
+  color: #64748b;
   margin: 0;
+  min-height: 2.6em;
+}
+
+.pain-point-content b {
+  min-height: 1.3em;
+  display: block;
+}
+
+.pain-point-content p {
+  min-height: 2.6em;
+  display: block;
+}
+
+.challenge-card-desc {
+  min-height: 2.8em;
+}
+
+/* ── Typewriter Writing Animation Cursor & Helpers ─────────── */
+.typewriter-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: #0284c7;
+  font-weight: 600;
+  animation: boxCursorBlink 0.5s step-start infinite;
+  opacity: 0.85;
+}
+
+@keyframes boxCursorBlink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
 /* ── Interactive Gesture Vocabulary Chips ────────────────── */

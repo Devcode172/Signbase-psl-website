@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import ParticleNetwork from "./ParticleNetwork";
 import {
   Hand,
   Users,
@@ -106,13 +107,79 @@ const RESEARCH_TABLES = [
   }
 ];
 
+function getCellTyping(fullText, startMs, durationMs, elapsedMs) {
+  if (elapsedMs < startMs) {
+    return { text: "", isTyping: false };
+  }
+  if (elapsedMs >= startMs + durationMs) {
+    return { text: fullText, isTyping: false };
+  }
+  const ratio = (elapsedMs - startMs) / durationMs;
+  const count = Math.max(1, Math.floor(fullText.length * ratio));
+  return {
+    text: fullText.slice(0, count),
+    isTyping: true,
+  };
+}
+
 export default function ResearchOrbit() {
   const [selectedTableId, setSelectedTableId] = useState(1);
+  const [tableInView, setTableInView] = useState(false);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const cardRef = useRef(null);
+
+  // Trigger typewriter writing animation when table enters viewport
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTableInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Animate writing of table data over 4.5s
+  useEffect(() => {
+    if (!tableInView) return undefined;
+    let startTime = null;
+    let rafId = null;
+    const TOTAL_DURATION = 4500; // 4.5 seconds
+
+    setElapsedMs(0);
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      setElapsedMs(progress);
+
+      if (progress < TOTAL_DURATION) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        setElapsedMs(TOTAL_DURATION);
+      }
+    };
+
+    rafId = requestAnimationFrame(step);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [selectedTableId, tableInView]);
+
   const activeTable =
     RESEARCH_TABLES.find((t) => t.id === selectedTableId) || RESEARCH_TABLES[0];
 
   return (
     <section className="research-orbit-section" id="research">
+      {/* Background Animated Particle Network (radisist.com style) */}
+      <ParticleNetwork />
+
       {/* Ambient Radial Lighting Glow */}
       <div className="orbit-ambient-glow" />
 
@@ -198,7 +265,7 @@ export default function ResearchOrbit() {
         </div>
 
         {/* Clean Human-Designed Table Card */}
-        <div className="research-data-card">
+        <div className="research-data-card" ref={cardRef}>
           <div className="data-card-header">
             <div className="data-card-title-group">
               <h3 className="data-table-heading">{activeTable.title}</h3>
@@ -206,7 +273,7 @@ export default function ResearchOrbit() {
             </div>
           </div>
 
-          {/* Responsive Table */}
+          {/* Responsive Table with 4-5s Data Writing Animation */}
           <div className="research-table-responsive">
             <table className="human-research-table">
               <thead>
@@ -217,19 +284,29 @@ export default function ResearchOrbit() {
                 </tr>
               </thead>
               <tbody>
-                {activeTable.rows.map((row, idx) => (
-                  <tr key={idx}>
-                    <td className="cell-primary">
-                      <b>{row.col1}</b>
-                    </td>
-                    <td className="cell-spec">
-                      <span className="cell-val">{row.col2}</span>
-                    </td>
-                    <td className="cell-context">
-                      <span>{row.col3}</span>
-                    </td>
-                  </tr>
-                ))}
+                {activeTable.rows.map((row, idx) => {
+                  const rowStart = idx * 1450;
+                  const c1 = getCellTyping(row.col1, rowStart, 450, elapsedMs);
+                  const c2 = getCellTyping(row.col2, rowStart + 420, 450, elapsedMs);
+                  const c3 = getCellTyping(row.col3, rowStart + 840, 560, elapsedMs);
+
+                  return (
+                    <tr key={idx}>
+                      <td className="cell-primary">
+                        <b>{c1.text}</b>
+                        {c1.isTyping && <span className="table-typing-cursor">|</span>}
+                      </td>
+                      <td className="cell-spec">
+                        <span className="cell-val">{c2.text}</span>
+                        {c2.isTyping && <span className="table-typing-cursor">|</span>}
+                      </td>
+                      <td className="cell-context">
+                        <span>{c3.text}</span>
+                        {c3.isTyping && <span className="table-typing-cursor">|</span>}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

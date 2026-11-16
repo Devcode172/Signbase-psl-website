@@ -1,17 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Video,
   ScanFace,
-  Monitor,
-  CheckCircle2,
-  Hand,
-  Cpu,
-  ShieldCheck,
-  Zap,
-  Activity,
-  Layers,
-  Sparkles,
-  ArrowRight
+  Hand
 } from "lucide-react";
 import "./HowItWorksStack.css";
 
@@ -46,9 +36,9 @@ export default function HowItWorksStack() {
             </p>
 
             <div className="stack-tags-row">
-              <span className="stack-tag"><Video size={13}/> 60 FPS Capture</span>
-              <span className="stack-tag"><ShieldCheck size={13}/> Privacy-Preserving</span>
-              <span className="stack-tag"><Activity size={13}/> Motion Trigger</span>
+              <span className="stack-tag">60 FPS Capture</span>
+              <span className="stack-tag">Privacy-Preserving</span>
+              <span className="stack-tag">Motion Trigger</span>
             </div>
           </div>
 
@@ -56,8 +46,7 @@ export default function HowItWorksStack() {
             <div className="sim-window">
               <div className="sim-header">
                 <div className="sim-header-left">
-                  <span className="sim-live-badge"><span className="sim-status-dot" style={{background:"#ef4444", boxShadow:"0 0 8px #ef4444"}}/> LIVE CAM</span>
-                  <span>TABLET VIEW • WEBCAM 01</span>
+                  <span className="sim-header-title">LIVE CAM</span>
                 </div>
                 <div className="sim-header-right">
                   <span>60 FPS</span>
@@ -67,17 +56,14 @@ export default function HowItWorksStack() {
 
               <div className="sim-stage-capture">
                 <div className="viewfinder-box">
-                  <span className="reticle-tr" />
-                  <span className="reticle-bl" />
                   <div className="viewfinder-scan-line" />
                   <Hand size={84} className="viewfinder-hand-icon" strokeWidth={1.5} />
-                  <div className="viewfinder-coords">LANDMARK 21-PT SKELETON • ACTIVE</div>
+                  <div className="viewfinder-coords">LANDMARK 21-PT SKELETON (ACTIVE)</div>
                 </div>
               </div>
 
               <div className="sim-footer">
                 <span className="sim-footer-status">
-                  <span className="sim-status-dot" />
                   GESTURE POSITION STABILIZED
                 </span>
                 <span>STATUS: READY FOR INFERENCE</span>
@@ -100,9 +86,9 @@ export default function HowItWorksStack() {
             </p>
 
             <div className="stack-tags-row">
-              <span className="stack-tag"><Cpu size={13}/> Deep Learning Engine</span>
-              <span className="stack-tag"><Zap size={13}/> &lt;14ms Inference</span>
-              <span className="stack-tag"><Layers size={13}/> 47 Banking Classes</span>
+              <span className="stack-tag">Deep Learning Engine</span>
+              <span className="stack-tag">&lt;14ms Inference</span>
+              <span className="stack-tag">47 Banking Classes</span>
             </div>
           </div>
 
@@ -110,10 +96,7 @@ export default function HowItWorksStack() {
             <div className="sim-window">
               <div className="sim-header">
                 <div className="sim-header-left">
-                  <span className="sim-live-badge" style={{background:"rgba(0,245,160,0.15)", color:"#00f5a0", borderColor:"rgba(0,245,160,0.3)"}}>
-                    <span className="sim-status-dot"/> MODEL ACTIVE
-                  </span>
-                  <span>SIGNBASE-CNN-LSTM • V2.4</span>
+                  <span className="sim-header-title">SIGNBASE-CNN-LSTM</span>
                 </div>
                 <div className="sim-header-right">
                   <span>LATENCY 14MS</span>
@@ -143,7 +126,6 @@ export default function HowItWorksStack() {
 
               <div className="sim-footer">
                 <span className="sim-footer-status">
-                  <span className="sim-status-dot" />
                   CLASSIFICATION RESOLVED: "ACCOUNT" #7180
                 </span>
                 <span>DISPATCHING WEBSOCKET PAYLOAD</span>
@@ -166,9 +148,9 @@ export default function HowItWorksStack() {
             </p>
 
             <div className="stack-tags-row">
-              <span className="stack-tag"><Monitor size={13}/> Dual-Screen Sync</span>
-              <span className="stack-tag"><CheckCircle2 size={13}/> Verified Output</span>
-              <span className="stack-tag"><Sparkles size={13}/> Immediate Service</span>
+              <span className="stack-tag">Dual-Screen Sync</span>
+              <span className="stack-tag">Verified Output</span>
+              <span className="stack-tag">Immediate Service</span>
             </div>
           </div>
 
@@ -176,10 +158,7 @@ export default function HowItWorksStack() {
             <div className="sim-window">
               <div className="sim-header">
                 <div className="sim-header-left">
-                  <span className="sim-live-badge" style={{background:"rgba(14,165,233,0.18)", color:"#38bdf8", borderColor:"rgba(56,189,248,0.4)"}}>
-                    <span className="sim-status-dot" style={{background:"#38bdf8", boxShadow:"0 0 8px #38bdf8"}}/> COUNTER #04
-                  </span>
-                  <span>TELLER DESKTOP TERMINAL</span>
+                  <span className="sim-header-title">TELLER DESKTOP TERMINAL</span>
                 </div>
                 <div className="sim-header-right">
                   <span>SESSION #418</span>
@@ -191,7 +170,7 @@ export default function HowItWorksStack() {
                 <div className="teller-terminal-card">
                   <div className="teller-terminal-top">
                     <span>INCOMING REQUEST</span>
-                    <span className="teller-status-pill"><span /> VERIFIED PSL</span>
+                    <span className="teller-status-pill">VERIFIED PSL</span>
                   </div>
 
                   <div className="teller-terminal-body">
@@ -218,8 +197,7 @@ export default function HowItWorksStack() {
 
               <div className="sim-footer">
                 <span className="sim-footer-status">
-                  <span className="sim-status-dot" />
-                  SERVICE IN PROGRESS • ZERO BARRIER
+                  SERVICE IN PROGRESS (ZERO BARRIER)
                 </span>
                 <span>AUDIT LOGGED</span>
               </div>

@@ -14,7 +14,6 @@ import "./hero-mission.css";
 import "./navbar.css";
 import "./buttons.css";
 import "./challenge-section.css";
-import "./product-experience.css";
 import "./technology-section.css";
 import "./research-section.css";
 import "./footer.css";
@@ -49,7 +48,7 @@ function Header({ logoArrived }) {
         ))}
       </nav>
       <a className="header-cta" href="#technology">
-        Explore the technology <ArrowUpRight size={14}/>
+        Start Free Analysis <ArrowUpRight size={14}/>
       </a>
       <button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>
         {open ? <X/> : <Menu/>}
@@ -64,7 +63,7 @@ function SectionHeading({ eyebrow, title, text, centered = false }) {
   </div>;
 }
 
-function AnimatedStatCard({ icon: Icon, badge, targetNumber, formatValue, label, themeClass, delay = 0 }) {
+function AnimatedStatCard({ badge, targetNumber, formatValue, label, themeClass, delay = 0 }) {
   const [value, setValue] = useState(0);
   const [inView, setInView] = useState(false);
   const cardRef = useRef(null);
@@ -121,19 +120,73 @@ function AnimatedStatCard({ icon: Icon, badge, targetNumber, formatValue, label,
       className={`stat-metric-card ${themeClass} ${inView ? "stat-in-view" : ""}`}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="stat-top-row">
-        <div className="stat-icon-wrap"><Icon size={18}/></div>
-      </div>
       <div className="stat-number">{formatValue(value, inView)}</div>
       <p className="stat-label">{label}</p>
-      <div className="stat-card-glow-bg" />
-      <div className="stat-card-sheen" />
     </div>
   );
 }
 
+function getBoxStreamText(fullText, startMs, durationMs, elapsedMs) {
+  if (elapsedMs < startMs) {
+    return { text: "", isTyping: false };
+  }
+  if (elapsedMs >= startMs + durationMs) {
+    return { text: fullText, isTyping: false };
+  }
+  const ratio = (elapsedMs - startMs) / durationMs;
+  const count = Math.max(1, Math.floor(fullText.length * ratio));
+  return {
+    text: fullText.slice(0, count),
+    isTyping: true,
+  };
+}
+
 function App() {
   const [siteReady, setSiteReady] = useState(false);
+  const [splitCardsInView, setSplitCardsInView] = useState(false);
+  const [cardsElapsedMs, setCardsElapsedMs] = useState(0);
+  const splitCardsRef = useRef(null);
+
+  useEffect(() => {
+    const el = splitCardsRef.current;
+    if (!el) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSplitCardsInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!splitCardsInView) return undefined;
+    let startTime = null;
+    let rafId = null;
+    const DURATION = 4500; // 4.5 seconds
+
+    setCardsElapsedMs(0);
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      setCardsElapsedMs(progress);
+      if (progress < DURATION) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        setCardsElapsedMs(DURATION);
+      }
+    };
+
+    rafId = requestAnimationFrame(step);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [splitCardsInView]);
 
   useEffect(() => {
     // Only activate heading emergence once preloader has finished and the site is visible
@@ -142,7 +195,7 @@ function App() {
     const timer = setTimeout(() => {
       // Select main heading containers across all sections
       const targets = document.querySelectorAll(
-        ".hero-statement-inner, .intro-header-wrap, .stack-section-header, .pe-header-copy, .tech-pipeline-header, .orbit-center-hub, .closing-cta-content"
+        ".hero-statement-inner, .intro-header-wrap, .stack-section-header, .tech-pipeline-header, .orbit-center-hub, .closing-cta-content"
       );
 
       const observer = new IntersectionObserver(
@@ -179,7 +232,7 @@ function App() {
       <Header logoArrived={siteReady} />
       <div className="hero-explore-banner">
         <a className="hero-explore-btn" href="#technology">
-          Explore the technology <ArrowUpRight size={15}/>
+          Start Free Analysis <ArrowUpRight size={15}/>
         </a>
       </div>
       <main className="hero hero-centered-stage">
@@ -219,7 +272,6 @@ function App() {
       {/* 4-Stat Metric Quick Facts with Live Count & Hover Animations */}
       <div className="intro-stats-grid">
         <AnimatedStatCard
-          icon={Users}
           targetNumber={1.5}
           formatValue={(val, active) => active ? <>{val.toFixed(1)}M<em>+</em></> : <>1.5M<em>+</em></>}
           label="Deaf citizens in Pakistan navigating branch banking without sign support."
@@ -227,7 +279,6 @@ function App() {
           delay={0}
         />
         <AnimatedStatCard
-          icon={Hand}
           targetNumber={47}
           formatValue={(val, active) => active ? <>{Math.floor(val)}<em> Signs</em></> : <>47<em> Signs</em></>}
           label="Targeted banking vocabulary covering deposits, inquiries, loans & security."
@@ -235,7 +286,6 @@ function App() {
           delay={120}
         />
         <AnimatedStatCard
-          icon={Clock}
           targetNumber={1}
           formatValue={(val, active) => active ? <>&lt;{val.toFixed(1)}<em>s</em></> : <>&lt;1<em>s</em></>}
           label="Real-time gesture analysis to teller screen transcription latency."
@@ -243,7 +293,6 @@ function App() {
           delay={240}
         />
         <AnimatedStatCard
-          icon={ShieldCheck}
           targetNumber={100}
           formatValue={(val, active) => active ? <>{Math.floor(val)}<em>%</em></> : <>100<em>%</em></>}
           label="Financial privacy and autonomous banking without third-party chaperones."
@@ -252,206 +301,142 @@ function App() {
         />
       </div>
 
-      {/* Side-by-Side Split Cards: Challenge vs Solution */}
-      <div className="split-cards-container">
+      {/* Side-by-Side Split Cards: Challenge vs Solution with Writing Animation */}
+      <div className="split-cards-container" ref={splitCardsRef}>
         {/* Card 1: The Challenge */}
-        <div className="challenge-card">
-          <h3>Current Branch Reality</h3>
-          <p className="challenge-card-desc">
-            Retail bank branches are designed around verbal interactions. When a Deaf customer steps up to the counter, communication stalls immediately.
-          </p>
+        {(() => {
+          const chDesc = getBoxStreamText("Retail bank branches are designed around verbal interactions. When a Deaf customer steps up to the counter, communication stalls immediately.", 100, 800, cardsElapsedMs);
+          const chT1 = getBoxStreamText("Zero Interpreter Availability", 950, 400, cardsElapsedMs);
+          const chD1 = getBoxStreamText("Over 98% of physical bank branches have no sign-fluent tellers or on-demand interpreter access.", 1250, 700, cardsElapsedMs);
+          const chT2 = getBoxStreamText("Compromised Financial Confidentiality", 2050, 400, cardsElapsedMs);
+          const chD2 = getBoxStreamText("Customers must share sensitive balance queries or PIN instructions through relatives or paper notes.", 2350, 700, cardsElapsedMs);
+          const chT3 = getBoxStreamText("Banking Terminology Misalignment", 3150, 400, cardsElapsedMs);
+          const chD3 = getBoxStreamText("Complex financial terms (clearing, overdraft, remittance, KYC) are difficult to convey via handwritten notes.", 3450, 750, cardsElapsedMs);
 
-          <div className="pain-points-list">
-            <div className="pain-point-item">
-              <div className="pain-icon-box"><XCircle size={17}/></div>
-              <div className="pain-point-content">
-                <b>Zero Interpreter Availability</b>
-                <p>Over 98% of physical bank branches have no sign-fluent tellers or on-demand interpreter access.</p>
+          return (
+            <div className="challenge-card">
+              <h3>Current Branch Reality</h3>
+              <p className="challenge-card-desc">
+                {chDesc.text}
+                {chDesc.isTyping && <span className="typewriter-cursor">|</span>}
+              </p>
+
+              <div className="pain-points-list">
+                <div className="pain-point-item">
+                  <div className="pain-icon-box">1</div>
+                  <div className="pain-point-content">
+                    <b>
+                      {chT1.text}
+                      {chT1.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {chD1.text}
+                      {chD1.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pain-point-item">
+                  <div className="pain-icon-box">2</div>
+                  <div className="pain-point-content">
+                    <b>
+                      {chT2.text}
+                      {chT2.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {chD2.text}
+                      {chD2.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pain-point-item">
+                  <div className="pain-icon-box">3</div>
+                  <div className="pain-point-content">
+                    <b>
+                      {chT3.text}
+                      {chT3.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {chD3.text}
+                      {chD3.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="pain-point-item">
-              <div className="pain-icon-box"><Lock size={17}/></div>
-              <div className="pain-point-content">
-                <b>Compromised Financial Confidentiality</b>
-                <p>Customers must share sensitive balance queries or PIN instructions through relatives or paper notes.</p>
-              </div>
-            </div>
-
-            <div className="pain-point-item">
-              <div className="pain-icon-box"><FileText size={17}/></div>
-              <div className="pain-point-content">
-                <b>Banking Terminology Misalignment</b>
-                <p>Complex financial terms (clearing, overdraft, remittance, KYC) are difficult to convey via handwritten notes.</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          );
+        })()}
 
         {/* Card 2: The SignBase Solution */}
-        <div className="solution-fintech-card">
-          <h3>SignBase PSL <em>Approach</em></h3>
-          <p className="solution-card-desc">
-            A customer-facing tablet captures Pakistan Sign Language gestures in real time, converting standard banking signs into instant English and Urdu terms on the teller's screen.
-          </p>
+        {(() => {
+          const soDesc = getBoxStreamText("A customer-facing tablet captures Pakistan Sign Language gestures in real time, converting standard banking signs into instant English and Urdu terms on the teller's screen.", 100, 800, cardsElapsedMs);
+          const soT1 = getBoxStreamText("47 Standardized PSL Banking Signs", 950, 400, cardsElapsedMs);
+          const soD1 = getBoxStreamText("Trained on authentic Pakistan Sign Language dataset curated specifically for counter transactions.", 1250, 700, cardsElapsedMs);
+          const soT2 = getBoxStreamText("Complete User Independence", 2050, 400, cardsElapsedMs);
+          const soD2 = getBoxStreamText("Empowers the customer to conduct confidential banking without relying on friends, family, or notes.", 2350, 700, cardsElapsedMs);
+          const soT3 = getBoxStreamText("Dual-Screen Synchronized Flow", 3150, 400, cardsElapsedMs);
+          const soD3 = getBoxStreamText("Signer gets live pose confirmation while the teller receives the verified Urdu and English banking action.", 3450, 750, cardsElapsedMs);
 
-          <div className="solution-points-list">
-            <div className="solution-point-item">
-              <div className="solution-icon-box"><CheckCircle2 size={17}/></div>
-              <div className="solution-point-content">
-                <b>47 Standardized PSL Banking Signs</b>
-                <p>Trained on authentic Pakistan Sign Language dataset curated specifically for counter transactions.</p>
+          return (
+            <div className="solution-fintech-card">
+              <h3>SignBase PSL <em>Approach</em></h3>
+              <p className="solution-card-desc">
+                {soDesc.text}
+                {soDesc.isTyping && <span className="typewriter-cursor">|</span>}
+              </p>
+
+              <div className="solution-points-list">
+                <div className="solution-point-item">
+                  <div className="solution-icon-box">1</div>
+                  <div className="solution-point-content">
+                    <b>
+                      {soT1.text}
+                      {soT1.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {soD1.text}
+                      {soD1.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="solution-point-item">
+                  <div className="solution-icon-box">2</div>
+                  <div className="solution-point-content">
+                    <b>
+                      {soT2.text}
+                      {soT2.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {soD2.text}
+                      {soD2.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="solution-point-item">
+                  <div className="solution-icon-box">3</div>
+                  <div className="solution-point-content">
+                    <b>
+                      {soT3.text}
+                      {soT3.isTyping && <span className="typewriter-cursor">|</span>}
+                    </b>
+                    <p>
+                      {soD3.text}
+                      {soD3.isTyping && <span className="typewriter-cursor">|</span>}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="solution-point-item">
-              <div className="solution-icon-box"><ShieldCheck size={17}/></div>
-              <div className="solution-point-content">
-                <b>Complete User Independence</b>
-                <p>Empowers the customer to conduct confidential banking without relying on friends, family, or notes.</p>
-              </div>
-            </div>
-
-            <div className="solution-point-item">
-              <div className="solution-icon-box"><Cpu size={17}/></div>
-              <div className="solution-point-content">
-                <b>Dual-Screen Synchronized Flow</b>
-                <p>Signer gets live pose confirmation while the teller receives the verified Urdu and English banking action.</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          );
+        })()}
       </div>
     </section>
 
     {/* HOW IT WORKS SECTION — EFFEPINNA STUDIO STICKY STACKING CARDS */}
     <HowItWorksStack />
-
-    {/* PRODUCT EXPERIENCE SECTION — REDESIGNED WITH SPLIT GRADIENT PRESERVED */}
-    <section className="product-experience-section" id="product">
-      <div className="pe-header-wrap">
-        <div className="pe-header-copy">
-          <div className="pe-eyebrow">
-            <span className="pe-eyebrow-dot" />
-            PRODUCT EXPERIENCE
-          </div>
-          <h2>
-            Two interfaces.<br />
-            <span>One connected experience.</span>
-          </h2>
-          <p>
-            The proposed system bridges the accessibility divide at bank counters by pairing a high-responsiveness customer tablet terminal with an intuitive teller workstation.
-          </p>
-        </div>
-        <div className="pe-sync-badge">
-          <span className="pe-sync-dot" />
-          Encrypted WebSocket Stream · &lt;1.2s Latency
-        </div>
-      </div>
-
-      <div className="pe-stage-grid">
-        {/* Customer Panel */}
-        <div className="pe-panel-card pe-panel-customer">
-          <div className="pe-device-meta">
-            <span className="pe-device-tag">01 / Customer Interface</span>
-            <span className="pe-device-os">Flutter · Android Tablet</span>
-          </div>
-          <h3>Tablet application</h3>
-          <p className="pe-panel-desc">
-            Self-service counter terminal with low-latency edge landmark extraction and privacy-first visual guidance.
-          </p>
-
-          <div className="pe-tablet-chassis">
-            <div className="pe-tablet-notch" />
-            <div className="pe-tablet-screen">
-              <div className="pe-screen-top-bar">
-                <span>SIGNBASE <b>PSL</b></span>
-                <span>CAM 1080P · 30 FPS</span>
-              </div>
-              <div className="pe-cam-viewfinder">
-                <div className="pe-landmark-container">
-                  <span className="pe-landmark-point lm-1" />
-                  <span className="pe-landmark-point lm-2" />
-                  <span className="pe-landmark-point lm-3" />
-                  <span className="pe-landmark-point lm-4" />
-                  <span className="pe-landmark-point lm-5" />
-                  <Hand size={44} className="pe-hand-icon" />
-                </div>
-                <span className="pe-screen-prompt">Place hands inside frame</span>
-              </div>
-              <div className="pe-screen-bottom-hud">
-                <span className="pe-hud-status"><span /> Ready to capture</span>
-                <span>21 MediaPipe Landmarks</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pe-features-list">
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Real-time video input with live frame alignment guidance
-            </div>
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Continuous 21-point hand landmark extraction
-            </div>
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Instant visual feedback without requiring spoken audio
-            </div>
-          </div>
-        </div>
-
-        {/* Teller Panel */}
-        <div className="pe-panel-card pe-panel-teller">
-          <div className="pe-device-meta">
-            <span className="pe-device-tag">02 / Teller Workstation</span>
-            <span className="pe-device-os">React · Web Dashboard</span>
-          </div>
-          <h3>Teller web interface</h3>
-          <p className="pe-panel-desc">
-            Real-time desktop dashboard translating incoming customer sign sequences directly into actionable banking commands.
-          </p>
-
-          <div className="pe-monitor-frame">
-            <div className="pe-monitor-screen">
-              <div className="pe-monitor-top">
-                <span>ACTIVE COUNTER SESSION · #042</span>
-                <span className="pe-verified-badge"><CheckCircle2 size={12} /> LIVE SYNCED</span>
-              </div>
-              <div className="pe-teller-verified-card">
-                <div className="pe-verified-header">
-                  <span>RECOGNIZED BANKING ACTION</span>
-                  <span className="pe-confidence-pill">98.4% CONFIDENCE</span>
-                </div>
-                <h4 className="pe-verified-title">Account Inquiry / Statement</h4>
-                <p className="pe-verified-desc">Customer requested transaction history and account balance verification.</p>
-              </div>
-              <div className="pe-monitor-actions">
-                <div className="pe-btn-process">Process Request</div>
-                <div className="pe-btn-token">Print Slip #42</div>
-              </div>
-            </div>
-          </div>
-          <div className="pe-monitor-stand" />
-
-          <div className="pe-features-list">
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Zero-install web dashboard for counter PCs
-            </div>
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Decoded banking lexicon with confidence scoring
-            </div>
-            <div className="pe-feature-item">
-              <span className="pe-feature-check"><Check size={12} /></span>
-              Integrated action shortcuts for rapid transaction service
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     {/* TECHNOLOGY PIPELINE SECTION — UNBOXED OPEN HORIZONTAL FLOW */}
     <section className="tech-pipeline-section" id="technology">

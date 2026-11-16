@@ -134,45 +134,44 @@
 
 .button-light:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #00f5a0 0%, #00d287 100%);
-  color: #04231a;
-  border-color: #00f5a0;
-  box-shadow:
-    0 12px 32px rgba(0, 245, 160, 0.42),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #00f5a0 0%, #00d287 100%) !important;
+  color: #04231a !important;
+  border-color: #00f5a0 !important;
+  box-shadow: none !important;
 }
 
 .button-light:hover svg {
-  color: #04231a;
+  color: #04231a !important;
   transform: translate(2px, -2px);
 }
 
-/* ── Header CTA in Navbar (Fintech Mint Accent) ───────────── */
+/* ── Header CTA in Navbar (White "Back to top" style) ─────── */
 .header-cta {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   justify-self: end;
   margin-left: auto;
-  padding: 9px 18px;
+  padding: 14px 24px;
   border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #00f5a0 !important;
-  background: rgba(0, 245, 160, 0.12) !important;
-  border: 1px solid rgba(0, 245, 160, 0.42) !important;
-  letter-spacing: 0.15px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #043828 !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  letter-spacing: 0.1px;
   text-decoration: none;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
   transition:
-    background 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.2s ease,
-    box-shadow 0.24s ease !important;
+    background 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.18s ease,
+    box-shadow 0.22s ease !important;
 }
 
 .header-cta svg {
-  color: #00f5a0;
+  color: #059669 !important;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -180,10 +179,8 @@
   background: linear-gradient(135deg, #00f5a0 0%, #00d287 100%) !important;
   color: #04231a !important;
   border-color: #00f5a0 !important;
-  box-shadow:
-    0 0 20px rgba(0, 245, 160, 0.45),
-    0 6px 18px rgba(0, 245, 160, 0.25) !important;
-  transform: translateY(-1.5px) !important;
+  box-shadow: none !important;
+  transform: translateY(-2px) !important;
 }
 
 .header-cta:hover svg {
