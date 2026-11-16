@@ -7,6 +7,10 @@ node_modules
 dist
 dist-ssr
 
+# Saved accounts (password hashes)
+data/users.json
+data/users.xlsx
+
 # Environment files
 .env
 .env.local

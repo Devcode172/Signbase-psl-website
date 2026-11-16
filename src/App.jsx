@@ -47,7 +47,7 @@ function Header({ logoArrived }) {
           </a>
         ))}
       </nav>
-      <a className="header-cta" href="#technology">
+      <a className="header-cta" href="#/login">
         Start Free Analysis <ArrowUpRight size={14}/>
       </a>
       <button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>
@@ -231,7 +231,7 @@ function App() {
       <div className="hero-glow glow-one"/><div className="hero-glow glow-two"/>
       <Header logoArrived={siteReady} />
       <div className="hero-explore-banner">
-        <a className="hero-explore-btn" href="#technology">
+        <a className="hero-explore-btn" href="#/login">
           Start Free Analysis <ArrowUpRight size={15}/>
         </a>
       </div>
