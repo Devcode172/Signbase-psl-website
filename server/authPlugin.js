@@ -1,15 +1,8 @@
 import crypto from "node:crypto";
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import ExcelJS from "exceljs";
+import { createClient } from "@supabase/supabase-js";
 import nodemailer from "nodemailer";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const usersFile = path.join(root, "data", "users.xlsx");
-const legacyFile = path.join(root, "data", "users.json");
 const LOGIN_MAIL = "Thanks for login in";
-const SHEET_NAME = "Users";
 
 const hits = new Map();
 
@@ -19,94 +12,68 @@ function send(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-function cellText(value) {
-  if (value == null) return "";
-  if (value instanceof Date) return value.toISOString();
-  if (typeof value === "object") {
-    if (typeof value.text === "string") return value.text;
-    if (value.result != null) return cellText(value.result);
-    if (Array.isArray(value.richText)) return value.richText.map((part) => part.text || "").join("");
+function createSupabaseClient(env) {
+  const url = env.SUPABASE_URL;
+  const key = env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw Object.assign(
+      new Error("Database is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in the server environment."),
+      { status: 503 }
+    );
   }
-  return String(value).trim();
-}
-
-function readLegacyUsers() {
   try {
-    const parsed = JSON.parse(fs.readFileSync(legacyFile, "utf8"));
-    return Array.isArray(parsed) ? parsed : [];
+    return createClient(url, key, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+    });
   } catch {
-    return [];
+    throw Object.assign(
+      new Error("Supabase configuration is invalid. Check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."),
+      { status: 503 }
+    );
   }
 }
 
-async function readUsers() {
-  if (!fs.existsSync(usersFile)) {
-    const legacy = readLegacyUsers();
-    if (legacy.length) await writeUsers(legacy);
-    return legacy;
-  }
-
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(usersFile);
-  const sheet = workbook.getWorksheet(SHEET_NAME) || workbook.worksheets[0];
-  if (!sheet) return [];
-
-  const users = [];
-  sheet.eachRow((row, rowNumber) => {
-    if (rowNumber === 1) return;
-    const email = cellText(row.getCell(2).value).toLowerCase();
-    const passwordHash = cellText(row.getCell(3).value);
-    if (!email || !passwordHash) return;
-    users.push({
-      name: cellText(row.getCell(1).value),
-      email,
-      passwordHash,
-      createdAt: cellText(row.getCell(4).value),
-    });
-  });
-  return users;
+function databaseUnavailable(operation, error) {
+  console.error(`Supabase ${operation} failed (${error?.code || error?.name || "unknown error"}).`);
+  return Object.assign(
+    new Error("Account storage is temporarily unavailable. Please try again."),
+    { status: 503 }
+  );
 }
 
-async function writeUsers(users) {
-  fs.mkdirSync(path.dirname(usersFile), { recursive: true });
-  const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet(SHEET_NAME);
-  sheet.columns = [
-    { header: "Name", key: "name", width: 28 },
-    { header: "Email", key: "email", width: 36 },
-    { header: "Password Hash", key: "passwordHash", width: 88 },
-    { header: "Created At", key: "createdAt", width: 28 },
-  ];
-  sheet.getRow(1).font = { bold: true };
-  for (const user of users) {
-    sheet.addRow({
-      name: user.name,
-      email: user.email,
-      passwordHash: user.passwordHash,
-      createdAt: user.createdAt,
-    });
-  }
-
+async function insertUser(user, env) {
+  const supabase = createSupabaseClient(env);
+  let result;
   try {
-    await workbook.xlsx.writeFile(usersFile);
+    result = await supabase.from("app_users").insert(user);
   } catch (error) {
-    if (error.code === "EBUSY" || error.code === "EPERM") {
-      throw Object.assign(new Error("Close data/users.xlsx in Excel, then try again."), { status: 503 });
-    }
-    throw error;
+    throw databaseUnavailable("signup", error);
   }
+
+  if (result.error?.code === "23505") return false;
+  if (result.error) throw databaseUnavailable("signup", result.error);
+  return true;
 }
 
-let writeChain = Promise.resolve();
+async function findUser(email, env) {
+  const supabase = createSupabaseClient(env);
+  let result;
+  try {
+    result = await supabase
+      .from("app_users")
+      .select("email, password_hash")
+      .eq("email", email)
+      .maybeSingle();
+  } catch (error) {
+    throw databaseUnavailable("login lookup", error);
+  }
 
-function updateUsers(mutator) {
-  writeChain = writeChain.then(async () => {
-    const users = await readUsers();
-    const result = mutator(users);
-    await writeUsers(users);
-    return result;
-  });
-  return writeChain;
+  if (result.error) throw databaseUnavailable("login lookup", result.error);
+  return result.data;
 }
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
@@ -123,25 +90,39 @@ function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(actual, expected);
 }
 
+function parseBody(raw) {
+  if (raw && typeof raw === "object" && !Buffer.isBuffer(raw)) return raw;
+  const text = Buffer.isBuffer(raw) ? raw.toString("utf8") : String(raw || "");
+  if (!text) return {};
+  try {
+    const body = JSON.parse(text);
+    if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error();
+    return body;
+  } catch {
+    throw Object.assign(new Error("The form could not be read."), { status: 400 });
+  }
+}
+
 function readBody(req) {
+  if (req.body !== undefined) return Promise.resolve(parseBody(req.body));
   return new Promise((resolve, reject) => {
-    let raw = "";
+    const chunks = [];
+    let size = 0;
     req.on("data", (chunk) => {
-      raw += chunk;
-      if (raw.length > 20_000) {
+      const buffer = Buffer.from(chunk);
+      size += buffer.length;
+      if (size > 20_000) {
         reject(Object.assign(new Error("That request is too large."), { status: 413 }));
         req.destroy();
-      }
-    });
-    req.on("end", () => {
-      if (!raw) {
-        resolve({});
         return;
       }
+      chunks.push(buffer);
+    });
+    req.on("end", () => {
       try {
-        resolve(JSON.parse(raw));
-      } catch {
-        reject(Object.assign(new Error("The form could not be read."), { status: 400 }));
+        resolve(parseBody(Buffer.concat(chunks)));
+      } catch (error) {
+        reject(error);
       }
     });
     req.on("error", () => {
@@ -176,7 +157,7 @@ async function sendLoginMail(env, to) {
   const pass = env.SMTP_PASS;
   if (!host || !user || !pass) {
     throw Object.assign(
-      new Error("Mail is not set up yet. Add SMTP_HOST, SMTP_USER, and SMTP_PASS to the .env file, then restart the site."),
+      new Error("Mail is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS in the server environment."),
       { status: 503 }
     );
   }
@@ -231,16 +212,11 @@ async function handle(req, res, env) {
       return true;
     }
 
-    const created = await updateUsers((users) => {
-      if (users.some((user) => user.email === email)) return false;
-      users.push({
-        name,
-        email,
-        passwordHash: hashPassword(password),
-        createdAt: new Date().toISOString(),
-      });
-      return true;
-    });
+    const created = await insertUser({
+      name,
+      email,
+      password_hash: hashPassword(password),
+    }, env);
 
     if (!created) {
       send(res, 409, { error: "An account with this email already exists. Log in instead." });
@@ -251,9 +227,8 @@ async function handle(req, res, env) {
     return true;
   }
 
-  const users = await readUsers();
-  const user = users.find((entry) => entry.email === email);
-  if (!user || !verifyPassword(password, user.passwordHash)) {
+  const user = await findUser(email, env);
+  if (!user || !verifyPassword(password, user.password_hash)) {
     send(res, 401, { error: "Email or password is incorrect." });
     return true;
   }
@@ -264,13 +239,22 @@ async function handle(req, res, env) {
     const status = error.status || 502;
     const message = error.status
       ? error.message
-      : "You are signed in, but the email could not be sent. Check the mail settings in .env.";
+      : "You are signed in, but the email could not be sent. Check the SMTP environment variables.";
     send(res, status, { error: message });
     return true;
   }
 
   send(res, 200, { ok: true, email: user.email, message: LOGIN_MAIL });
   return true;
+}
+
+export async function handleAuthRequest(req, res, env = process.env) {
+  try {
+    const handled = await handle(req, res, env);
+    if (!handled) send(res, 404, { error: "Not found." });
+  } catch (error) {
+    if (!res.headersSent) send(res, error.status || 500, { error: error.message || "Something went wrong." });
+  }
 }
 
 export function authApiPlugin(env) {
