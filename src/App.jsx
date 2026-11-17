@@ -237,7 +237,7 @@ function App() {
       </div>
       <main className="hero hero-centered-stage">
         <div className="hero-visual-fullscreen">
-          <WireframeHero/>
+          <WireframeHero startAnimation={siteReady} />
         </div>
       </main>
     </div>

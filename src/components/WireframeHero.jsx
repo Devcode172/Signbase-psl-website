@@ -1,10 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-export default function WireframeHero() {
+export default function WireframeHero({ startAnimation = true }) {
   const mountRef = useRef(null);
-  const [modelLoaded, setModelLoaded] = useState(false);
+  const introStartRef = useRef(null);
+  const startAnimationRef = useRef(startAnimation);
+  const modelReadyRef = useRef(false);
+
+  useEffect(() => {
+    startAnimationRef.current = startAnimation;
+    if (startAnimation && modelReadyRef.current && introStartRef.current === null) {
+      introStartRef.current = performance.now();
+    }
+  }, [startAnimation]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -24,6 +33,7 @@ export default function WireframeHero() {
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
+    renderer.localClippingEnabled = true;
     mount.appendChild(renderer.domElement);
 
     // --- Lighting ---
@@ -45,6 +55,32 @@ export default function WireframeHero() {
     const fillLight = new THREE.PointLight(0x1d4ed8, 2.2, 8);
     fillLight.position.set(0, 0.2, 1.5);
     scene.add(fillLight);
+
+    const auraCanvas = document.createElement("canvas");
+    auraCanvas.width = 256;
+    auraCanvas.height = 256;
+    const auraContext = auraCanvas.getContext("2d");
+    const auraGradient = auraContext.createRadialGradient(128, 128, 8, 128, 128, 128);
+    auraGradient.addColorStop(0, "rgba(104, 72, 255, 0.08)");
+    auraGradient.addColorStop(0.28, "rgba(100, 92, 255, 0.44)");
+    auraGradient.addColorStop(0.6, "rgba(56, 120, 255, 0.22)");
+    auraGradient.addColorStop(1, "rgba(56, 120, 255, 0)");
+    auraContext.fillStyle = auraGradient;
+    auraContext.fillRect(0, 0, auraCanvas.width, auraCanvas.height);
+    const auraTexture = new THREE.CanvasTexture(auraCanvas);
+    auraTexture.colorSpace = THREE.SRGBColorSpace;
+    const auraMaterial = new THREE.SpriteMaterial({
+      map: auraTexture,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const robotAura = new THREE.Sprite(auraMaterial);
+    robotAura.position.set(-0.55, 0.9, -0.8);
+    robotAura.scale.set(0.1, 0.1, 1);
+    scene.add(robotAura);
 
     // Holographic floor grid
     const grid = new THREE.GridHelper(12, 32, 0x00f0ff, 0x07355e);
@@ -73,10 +109,94 @@ export default function WireframeHero() {
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
+    const buildParticleCount = 110;
+    const buildParticlePositions = new Float32Array(buildParticleCount * 3);
+    const buildParticleOffsets = new Float32Array(buildParticleCount * 3);
+    for (let i = 0; i < buildParticleCount; i++) {
+      const index = i * 3;
+      buildParticleOffsets[index] = Math.random() * 2 - 1;
+      buildParticleOffsets[index + 1] = Math.random() * 2 - 1;
+      buildParticleOffsets[index + 2] = Math.random() * Math.PI * 2;
+    }
+    const buildParticleGeo = new THREE.BufferGeometry();
+    buildParticleGeo.setAttribute("position", new THREE.BufferAttribute(buildParticlePositions, 3));
+    const buildParticleMat = new THREE.PointsMaterial({
+      color: 0xcbbcff,
+      size: 0.022,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const buildParticles = new THREE.Points(buildParticleGeo, buildParticleMat);
+    scene.add(buildParticles);
+
+    const lightningMainSegments = 26;
+    const lightningBranchCount = 12;
+    const lightningBranches = Array.from({ length: lightningBranchCount }, () => ({
+      ratio: 0.07 + Math.random() * 0.86,
+      side: Math.random() < 0.5 ? -1 : 1,
+      lengthScale: 0.55 + Math.random() * 0.9,
+      widthScale: 0.6 + Math.random() * 0.6,
+    })).sort((a, b) => a.ratio - b.ratio);
+    const lightningMaxSegments = lightningMainSegments + lightningBranchCount * 2;
+    const lightningGeometry = new THREE.CylinderGeometry(1, 1, 1, 6, 1, true);
+    const lightningHaloMaterial = new THREE.MeshBasicMaterial({
+      color: 0x3e58ff,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const lightningGlowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x725cff,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const lightningCoreMaterial = new THREE.MeshBasicMaterial({
+      color: 0xf7f3ff,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const lightningHalo = new THREE.InstancedMesh(
+      lightningGeometry,
+      lightningHaloMaterial,
+      lightningMaxSegments
+    );
+    const lightningGlow = new THREE.InstancedMesh(
+      lightningGeometry,
+      lightningGlowMaterial,
+      lightningMaxSegments
+    );
+    const lightningCore = new THREE.InstancedMesh(
+      lightningGeometry,
+      lightningCoreMaterial,
+      lightningMaxSegments
+    );
+    lightningHalo.count = 0;
+    lightningGlow.count = 0;
+    lightningCore.count = 0;
+    lightningHalo.frustumCulled = false;
+    lightningGlow.frustumCulled = false;
+    lightningCore.frustumCulled = false;
+    lightningHalo.renderOrder = -3;
+    lightningGlow.renderOrder = -2;
+    lightningCore.renderOrder = -1;
+    scene.add(lightningHalo, lightningGlow, lightningCore);
+    const lightningLight = new THREE.PointLight(0x8c73ff, 0, 1.8, 2);
+    scene.add(lightningLight);
+
     // --- Laptop Construction (Realistic solid silver/grey — no wireframe trim) ---
     const laptopGroup = new THREE.Group();
     laptopGroup.position.set(0.50, 0.80, 0.18);
-    laptopGroup.rotation.set(0.04, -0.32, 0.0);
+    laptopGroup.rotation.set(0.04, -0.52, 0.0);
     scene.add(laptopGroup);
 
     // Space-grey aluminium body
@@ -364,8 +484,8 @@ export default function WireframeHero() {
 
         // "Accuracy: 98.6%" line below
         ctx.fillStyle = "#94a3b8";
-        ctx.font = "400 18px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-        ctx.fillText("Accuracy: 98.6%", cx, cy + 85);
+        ctx.font = "400 32px 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillText("Accuracy: 98.6%", cx, cy + 93);
       }
 
       ctx.restore();
@@ -378,30 +498,63 @@ export default function WireframeHero() {
     const gltfLoader = new GLTFLoader();
     let modelBones = null;
     let humanModel = null;
+    let modelBounds = null;
+    let modelSize = null;
+    let modelCenter = null;
+    const robotSolidPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const robotHologramPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+    const laptopMaterializationPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+    laptopGroup.traverse((object) => {
+      if (!object.isMesh) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      for (const material of materials) {
+        material.clippingPlanes = [laptopMaterializationPlane];
+      }
+    });
 
     // Glowing Wireframe Materials matching the user's reference image
     const bodyWireMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00f0ff,
+      color: 0x65d9e8,
       wireframe: true,
       transparent: true,
-      opacity: 0.90,
+      opacity: 0.10,
       blending: THREE.AdditiveBlending,
-      depthWrite: false
+      depthWrite: false,
+      clippingPlanes: [robotSolidPlane],
     });
 
     const bodyInnerMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x041936,
-      emissive: 0x05264a,
-      emissiveIntensity: 0.45,
-      roughness: 0.25,
-      metalness: 0.5,
+      color: 0x465d75,
+      emissive: 0x061a2c,
+      emissiveIntensity: 0.18,
+      roughness: 0.33,
+      metalness: 0.65,
+      clearcoat: 0.75,
+      clearcoatRoughness: 0.22,
       transparent: true,
-      opacity: 0.88,
-      depthWrite: true
+      opacity: 1,
+      depthWrite: true,
+      clippingPlanes: [robotSolidPlane],
     });
 
-    const eyeGlowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffffff
+    const hologramWireMaterial = new THREE.MeshBasicMaterial({
+      color: 0xa59cff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.25,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      clippingPlanes: [robotHologramPlane],
+    });
+
+    const jointGeometry = new THREE.SphereGeometry(0.014, 10, 8);
+    const jointMaterial = new THREE.MeshBasicMaterial({
+      color: 0x9deaff,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      clippingPlanes: [robotSolidPlane],
     });
 
     gltfLoader.load(
@@ -426,6 +579,12 @@ export default function WireframeHero() {
             wireClone.frustumCulled = false;
             wireClone.bind(obj.skeleton, obj.bindMatrix);
             obj.parent.add(wireClone);
+
+            const hologramClone = obj.clone();
+            hologramClone.material = hologramWireMaterial;
+            hologramClone.frustumCulled = false;
+            hologramClone.bind(obj.skeleton, obj.bindMatrix);
+            obj.parent.add(hologramClone);
           }
         });
 
@@ -437,28 +596,38 @@ export default function WireframeHero() {
         // Turned towards laptop (right) while still facing towards the screen
         model.rotation.y = 0.42;
         scene.add(model);
+        model.updateMatrixWorld(true);
+        modelBounds = new THREE.Box3().setFromObject(model);
+        modelSize = modelBounds.getSize(new THREE.Vector3());
+        modelCenter = modelBounds.getCenter(new THREE.Vector3());
+        robotSolidPlane.constant = -modelBounds.max.y;
+        robotHologramPlane.constant = modelBounds.max.y;
+        laptopMaterializationPlane.constant = modelBounds.min.y;
+        model.visible = false;
 
-        // Add Glowing Eyes to character head (matching the user's reference image!)
-        const leftEyeBone = bones["mixamorigLeftEye"];
-        const rightEyeBone = bones["mixamorigRightEye"];
-        if (leftEyeBone && rightEyeBone) {
-          const eyeGeo = new THREE.SphereGeometry(0.016, 12, 12);
-
-          const leftEyeMesh = new THREE.Mesh(eyeGeo, eyeGlowMaterial);
-          leftEyeMesh.position.set(0, 0, 0.02);
-          leftEyeBone.add(leftEyeMesh);
-
-          const rightEyeMesh = new THREE.Mesh(eyeGeo, eyeGlowMaterial);
-          rightEyeMesh.position.set(0, 0, 0.02);
-          rightEyeBone.add(rightEyeMesh);
-
-          // Eye light for intense glowing eyes
-          const eyeLight = new THREE.PointLight(0x00f0ff, 1.8, 0.6);
-          eyeLight.position.set(0, 0, 0.08);
-          leftEyeBone.add(eyeLight);
+        modelReadyRef.current = true;
+        if (startAnimationRef.current && introStartRef.current === null) {
+          introStartRef.current = performance.now();
         }
 
-        setModelLoaded(true);
+        const jointBoneNames = [
+          "mixamorigLeftArm",
+          "mixamorigLeftForeArm",
+          "mixamorigRightArm",
+          "mixamorigRightForeArm",
+          "mixamorigSpine",
+          "mixamorigSpine1",
+          "mixamorigLeftHand",
+          "mixamorigRightHand",
+        ];
+        for (const boneName of jointBoneNames) {
+          const bone = bones[boneName];
+          if (!bone) continue;
+          const joint = new THREE.Mesh(jointGeometry, jointMaterial);
+          if (boneName.includes("Spine")) joint.scale.setScalar(1.35);
+          bone.add(joint);
+        }
+
       },
       undefined,
       (err) => {
@@ -471,7 +640,7 @@ export default function WireframeHero() {
     let isVisible = true;
     let lastScreenDrawTime = 0;
     let lastScreenState = -1;
-    const startTime = performance.now();
+    const introDuration = 3200;
     const cycleDuration = 8400; // 8.4s total cinematic cycle
 
     const smoothstep = (min, max, val) => {
@@ -479,11 +648,235 @@ export default function WireframeHero() {
       return x * x * (3 - 2 * x);
     };
 
+    const lightningPoints = Array.from(
+      { length: lightningMainSegments + 1 },
+      () => new THREE.Vector3()
+    );
+    const branchStart = new THREE.Vector3();
+    const branchMid = new THREE.Vector3();
+    const branchEnd = new THREE.Vector3();
+    const boltDirection = new THREE.Vector3();
+    const boltMidpoint = new THREE.Vector3();
+    const boltScale = new THREE.Vector3();
+    const boltQuaternion = new THREE.Quaternion();
+    const boltMatrix = new THREE.Matrix4();
+    const boltUnitY = new THREE.Vector3(0, 1, 0);
+    const lightningClippedStart = new THREE.Vector3();
+    const lightningClippedEnd = new THREE.Vector3();
+
+    const lightningNoise = (pointIndex, axis, now) => {
+      const step = Math.floor(now / 90);
+      const phase = (now / 90) % 1;
+      const blend = phase * phase * (3 - 2 * phase);
+      const sample = (sampleStep) => {
+        const value = Math.sin(
+          pointIndex * 127.1 + axis * 311.7 + sampleStep * 74.7
+        ) * 43758.5453;
+        return value - Math.floor(value) - 0.5;
+      };
+      return THREE.MathUtils.lerp(sample(step), sample(step + 1), blend);
+    };
+
+    const setLightningSegment = (mesh, index, start, end, radius) => {
+      boltDirection.subVectors(end, start);
+      const length = boltDirection.length();
+      if (length < 0.001) {
+        boltQuaternion.identity();
+        boltMidpoint.copy(start);
+        boltScale.set(0, 0, 0);
+        boltMatrix.compose(boltMidpoint, boltQuaternion, boltScale);
+        mesh.setMatrixAt(index, boltMatrix);
+        return;
+      }
+      boltDirection.normalize();
+      boltQuaternion.setFromUnitVectors(boltUnitY, boltDirection);
+      boltMidpoint.addVectors(start, end).multiplyScalar(0.5);
+      boltScale.set(radius, length, radius);
+      boltMatrix.compose(boltMidpoint, boltQuaternion, boltScale);
+      mesh.setMatrixAt(index, boltMatrix);
+    };
+
     function animate(now) {
       if (!isVisible) return;
       raf = requestAnimationFrame(animate);
-      const elapsed = now - startTime;
+      const buildProgress = introStartRef.current === null
+        ? 0
+        : THREE.MathUtils.clamp((now - introStartRef.current) / introDuration, 0, 1);
+      const elapsed = introStartRef.current === null
+        ? 0
+        : Math.max(0, now - introStartRef.current - introDuration);
       const progress = (elapsed % cycleDuration) / cycleDuration; // 0.0 to 1.0
+
+      if (modelBounds && modelSize && modelCenter) {
+        const laptopSweepProgress = smoothstep(0, 1, buildProgress);
+        const robotSweepProgress = 1 - laptopSweepProgress;
+        const robotSweepY = THREE.MathUtils.lerp(
+          modelBounds.min.y,
+          modelBounds.max.y,
+          robotSweepProgress
+        );
+        const laptopSweepY = THREE.MathUtils.lerp(
+          modelBounds.min.y,
+          modelBounds.max.y,
+          laptopSweepProgress
+        );
+        robotSolidPlane.constant = -robotSweepY;
+        robotHologramPlane.constant = robotSweepY;
+        laptopMaterializationPlane.constant = laptopSweepY;
+        if (humanModel) humanModel.visible = introStartRef.current !== null;
+        bodyWireMaterial.opacity = 0.015 +
+          0.10 * (1 - smoothstep(0.7, 1, buildProgress));
+        bodyInnerMaterial.opacity = 0.72 + 0.28 * smoothstep(0.88, 1, buildProgress);
+        hologramWireMaterial.opacity = 0.25 * (1 - smoothstep(0.92, 1, buildProgress));
+
+        const particleFade = smoothstep(0.015, 0.10, buildProgress) *
+          (1 - smoothstep(0.82, 1, buildProgress));
+        buildParticleMat.opacity = 0.95 * particleFade;
+
+        const heightRatio = robotSweepProgress;
+        const widthRatio = heightRatio < 0.12 ? 0.18
+          : heightRatio < 0.42 ? 0.32
+            : heightRatio < 0.64 ? 0.48
+              : heightRatio < 0.78 ? 0.92
+                : heightRatio < 0.90 ? 0.34 : 0.24;
+        const modelOffsetX = humanModel ? humanModel.position.x - (-0.55) : 0;
+        const modelOffsetZ = humanModel ? humanModel.position.z : 0;
+        const electricityFade = smoothstep(0.005, 0.06, buildProgress);
+        const electricityFlicker = 0.82 +
+          Math.sin(now * 0.061) * 0.13 +
+          Math.sin(now * 0.173) * 0.05;
+        const electricity = electricityFade * electricityFlicker;
+
+        const auraFade = 1 - smoothstep(0.82, 1, buildProgress);
+        auraMaterial.opacity = 0.56 * electricity * auraFade;
+        robotAura.position.set(
+          modelCenter.x + modelOffsetX,
+          modelCenter.y,
+          modelCenter.z + modelOffsetZ - 0.8
+        );
+        robotAura.scale.set(modelSize.x * 2.4, modelSize.y * 1.3, 1);
+
+        lightningHaloMaterial.opacity = 0.18 * electricity;
+        lightningGlowMaterial.opacity = 0.82 * electricity;
+        lightningCoreMaterial.opacity = electricity;
+        const lightningX = humanModel
+          ? humanModel.position.x
+          : modelCenter.x + modelOffsetX;
+        const lightningZ = modelBounds.min.z + modelOffsetZ - 0.10;
+        const lightningTopY = modelBounds.max.y + 0.035;
+        const lightningBottomY = modelBounds.min.y - 0.035;
+        const lightningFadeY = THREE.MathUtils.lerp(
+          modelBounds.min.y - modelSize.y * 0.04,
+          modelBounds.max.y + modelSize.y * 0.04,
+          robotSweepProgress
+        );
+        const activeMainSegments = electricity > 0
+          ? lightningMainSegments
+          : 0;
+
+        for (let i = 0; i <= activeMainSegments; i++) {
+          const ratio = activeMainSegments > 0 ? i / activeMainSegments : 0;
+          const isEndpoint = i === 0 || i === activeMainSegments;
+          const jitterX = isEndpoint ? 0 : lightningNoise(i, 0, now) * 0.08;
+          const jitterZ = isEndpoint ? 0 : lightningNoise(i, 1, now) * 0.05;
+          lightningPoints[i].set(
+            lightningX + jitterX,
+            THREE.MathUtils.lerp(lightningTopY, lightningBottomY, ratio),
+            lightningZ + jitterZ
+          );
+        }
+
+        let lightningSegmentIndex = 0;
+        const addVisibleLightningSegment = (start, end, haloRadius, glowRadius, coreRadius) => {
+          if (start.y >= lightningFadeY && end.y >= lightningFadeY) return;
+          lightningClippedStart.copy(start);
+          lightningClippedEnd.copy(end);
+          if (start.y >= lightningFadeY) {
+            const ratio = (lightningFadeY - start.y) / (end.y - start.y);
+            lightningClippedStart.lerpVectors(start, end, ratio);
+          } else if (end.y >= lightningFadeY) {
+            const ratio = (lightningFadeY - start.y) / (end.y - start.y);
+            lightningClippedEnd.lerpVectors(start, end, ratio);
+          }
+          if (lightningClippedStart.distanceToSquared(lightningClippedEnd) < 0.000001) return;
+          setLightningSegment(lightningHalo, lightningSegmentIndex, lightningClippedStart, lightningClippedEnd, haloRadius);
+          setLightningSegment(lightningGlow, lightningSegmentIndex, lightningClippedStart, lightningClippedEnd, glowRadius);
+          setLightningSegment(lightningCore, lightningSegmentIndex, lightningClippedStart, lightningClippedEnd, coreRadius);
+          lightningSegmentIndex += 1;
+        };
+        for (let i = 0; i < activeMainSegments; i++) {
+          const haloRadius = 0.03 + (i % 4 === 0 ? 0.008 : 0);
+          const glowRadius = 0.014 + (i % 4 === 0 ? 0.005 : 0);
+          const coreRadius = 0.007 + (i % 5 === 0 ? 0.002 : 0);
+          addVisibleLightningSegment(
+            lightningPoints[i],
+            lightningPoints[i + 1],
+            haloRadius,
+            glowRadius,
+            coreRadius
+          );
+        }
+
+        const activeBranches = electricity > 0
+          ? lightningBranchCount
+          : 0;
+        for (let i = 0; i < activeBranches; i++) {
+          const branch = lightningBranches[i];
+          const branchPointIndex = Math.round(branch.ratio * lightningMainSegments);
+          const branchLength = Math.max(modelSize.x * 0.11, 0.06) * branch.lengthScale;
+          const branchJitter = lightningNoise(lightningMainSegments + i, 2, now) * 0.025;
+          branchStart.copy(lightningPoints[branchPointIndex]);
+          branchMid.set(
+            branchStart.x + branch.side * branchLength * 0.48,
+            branchStart.y - branchLength * 0.42 + branchJitter,
+            branchStart.z + lightningNoise(lightningMainSegments + i, 3, now) * 0.015
+          );
+          branchEnd.set(
+            branchStart.x + branch.side * branchLength,
+            branchStart.y - branchLength * 0.95 + branchJitter * 1.3,
+            branchStart.z + lightningNoise(lightningMainSegments + i, 4, now) * 0.025
+          );
+          const branchHaloRadius = 0.016 * branch.widthScale;
+          const branchGlowRadius = 0.009 * branch.widthScale;
+          const branchCoreRadius = 0.0045 * branch.widthScale;
+          addVisibleLightningSegment(
+            branchStart,
+            branchMid,
+            branchHaloRadius,
+            branchGlowRadius,
+            branchCoreRadius
+          );
+          addVisibleLightningSegment(
+            branchMid,
+            branchEnd,
+            branchHaloRadius * 0.72,
+            branchGlowRadius * 0.72,
+            branchCoreRadius * 0.72
+          );
+        }
+
+        lightningHalo.count = lightningSegmentIndex;
+        lightningGlow.count = lightningSegmentIndex;
+        lightningCore.count = lightningSegmentIndex;
+        lightningHalo.instanceMatrix.needsUpdate = true;
+        lightningGlow.instanceMatrix.needsUpdate = true;
+        lightningCore.instanceMatrix.needsUpdate = true;
+        lightningLight.position.set(lightningX, modelCenter.y, lightningZ + 0.06);
+        lightningLight.intensity = 3.5 * electricity * (1 - buildProgress);
+
+        const positions = buildParticleGeo.attributes.position.array;
+        for (let i = 0; i < buildParticleCount; i++) {
+          const index = i * 3;
+          const phase = buildParticleOffsets[index + 2];
+          positions[index] = modelCenter.x + modelOffsetX +
+            buildParticleOffsets[index] * modelSize.x * widthRatio * 0.5;
+          positions[index + 1] = robotSweepY + Math.sin(now * 0.007 + phase) * 0.035;
+          positions[index + 2] = modelCenter.z + modelOffsetZ +
+            buildParticleOffsets[index + 1] * Math.max(modelSize.z * 0.55, 0.04) + 0.025;
+        }
+        buildParticleGeo.attributes.position.needsUpdate = true;
+
+      }
 
       // Spatial Choreography Timing:
       // 0.00 - 0.44: Human performs sign in front. Laptop rests on side in standby.
@@ -523,7 +916,7 @@ export default function WireframeHero() {
       laptopGroup.position.z = THREE.MathUtils.lerp(0.18, 0.65, forwardFactor);
 
       laptopGroup.rotation.x = THREE.MathUtils.lerp(0.04, 0.02, forwardFactor);
-      laptopGroup.rotation.y = THREE.MathUtils.lerp(-0.32, -0.08, forwardFactor);
+      laptopGroup.rotation.y = THREE.MathUtils.lerp(-0.52, -0.08, forwardFactor);
 
       // 3. Laptop Screen State Timing:
       let screenState = 0;
@@ -712,7 +1105,7 @@ export default function WireframeHero() {
       renderer.render(scene, camera);
     }
 
-    animate(startTime);
+    animate(performance.now());
 
     // Responsive resize
     const handleResize = () => {
@@ -758,6 +1151,19 @@ export default function WireframeHero() {
       screenTexture.dispose();
       particleGeo.dispose();
       particleMat.dispose();
+      buildParticleGeo.dispose();
+      buildParticleMat.dispose();
+      auraTexture.dispose();
+      auraMaterial.dispose();
+      lightningGeometry.dispose();
+      lightningHaloMaterial.dispose();
+      lightningGlowMaterial.dispose();
+      lightningCoreMaterial.dispose();
+      bodyWireMaterial.dispose();
+      bodyInnerMaterial.dispose();
+      hologramWireMaterial.dispose();
+      jointGeometry.dispose();
+      jointMaterial.dispose();
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
