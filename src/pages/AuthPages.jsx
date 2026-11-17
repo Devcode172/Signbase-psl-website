@@ -85,10 +85,9 @@ export function LoginPage() {
       <section className="auth-card">
         {sentTo ? (
           <div className="auth-success">
-            <p className="auth-kicker">Email sent</p>
             <h1>Thanks for login in</h1>
             <p>
-              A message was sent to <b>{sentTo}</b>. It says "Thanks for login in".
+              A message was sent to <b>{sentTo}</b>.
             </p>
             <a className="auth-submit" href="#home">Back to the site <ArrowUpRight size={16} /></a>
           </div>
