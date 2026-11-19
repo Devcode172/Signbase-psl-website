@@ -568,7 +568,7 @@ function App() {
             <h4 className="footer-col-title">Project Oversight</h4>
             <div className="footer-info-block">
               <b>Supervised by Dr. Irfana Bibi</b>
-              <span>BS Computer Science (2022–2026)</span>
+              <span>BS Computer Science (2023–2027)</span>
               <span>Lahore, Pakistan</span>
             </div>
           </div>
